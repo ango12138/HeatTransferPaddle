@@ -38,8 +38,11 @@ class BasicModule(object):
             self._load(load_path)
 
         self.characteristic = Characteristic()
-        self.fields_metric = PhysicsLpLoss(p=2, samples_reduction=False, channel_reduction=False)  # 使用二阶范数
-        self.target_metric = PhysicsLpLoss(p=1, samples_reduction=False, channel_reduction=False)  # 使用一阶范数
+        # 物理场采用二阶范数
+        self.fields_metric = PhysicsLpLoss(p=2, samples_reduction=False, channel_reduction=False)
+        # 性能参数使用一阶范数, 同时考虑到f有接近于0的情况，使用relative=False
+        self.target_metric = PhysicsLpLoss(p=1, relative=False, samples_reduction=False, channel_reduction=False)
+
 
     def train(self, train_loader, valid_loader):
 
@@ -50,9 +53,9 @@ class BasicModule(object):
             train_epoch_time = time.time() - sta_time
 
             if epoch % self.print_freq == 0:
-                train_metric, train_loss = self.valid_epoch(train_loader, 'train')
+                train_metric, train_loss = self.valid_epoch(train_loader)
                 valid_train_time = time.time() - train_epoch_time - sta_time
-                valid_metric, valid_loss = self.valid_epoch(valid_loader, 'valid')
+                valid_metric, valid_loss = self.valid_epoch(valid_loader)
                 valid_valid_time = time.time() - valid_train_time - train_epoch_time - sta_time
 
                 self.loghistory.append(epoch=epoch,
@@ -361,14 +364,15 @@ class BasicModule(object):
         print("Initialized {} with {} trainable params ".format(self.name, params))
 
         self.loss_func = lossfunc_dict[self.loss_name]
-        self.optimizer = optim.Adam(parameters=self.network.parameters(),
-                                    learning_rate=self.learning_rate,
-                                    beta1=self.learning_beta[0], beta2=self.learning_beta[1],
-                                    weight_decay=self.weight_decay)
 
         self.scheduler = optim.lr.MultiStepDecay(learning_rate=self.learning_rate,
                                                  milestones=self.learning_milestones,
                                                  gamma=self.learning_gamma)
+
+        self.optimizer = optim.Adam(parameters=self.network.parameters(),
+                                    learning_rate=self.scheduler,
+                                    beta1=self.learning_beta[0], beta2=self.learning_beta[1],
+                                    weight_decay=self.weight_decay)
 
     def _set_logger(self):
 
@@ -473,7 +477,7 @@ class Characteristic(nn.Layer):
 
         Tw = self.cal_tw(X, Y, T)
         Tb = self.cal_tb(X, Y, T)
-        h = hflex / paddle.abs(Tw - Tb)
+        h = hflex / (paddle.abs(Tw - Tb) + 1e-8)  # 保证数值稳定性
         Nu = h * D / lamda
 
         vel = Re * miu / rho / D
@@ -507,7 +511,7 @@ class PhysicsLpLoss(object):
             all_norms = paddle.norm(y.reshape((x.shape[0], -1, x.shape[-1])), self.p, 1)
 
             if self.relative:
-                res_norms = dif_norms / (all_norms + 1e-12)
+                res_norms = dif_norms / (all_norms + 1e-8)
             else:
                 res_norms = dif_norms
 
@@ -523,7 +527,7 @@ class PhysicsLpLoss(object):
             all_norms = np.linalg.norm(y.reshape(x.shape[0], -1, x.shape[-1]), self.p, 1)
 
             if self.relative:
-                res_norms = dif_norms / (all_norms + 1e-12)
+                res_norms = dif_norms / (all_norms + 1e-8)
             else:
                 res_norms = dif_norms
 

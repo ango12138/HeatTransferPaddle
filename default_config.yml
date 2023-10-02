@@ -50,6 +50,7 @@ DON_model:
     - 64
     - 64
     - 64
+    - 64
   activation: 'gelu'
 
 MLP_model:
