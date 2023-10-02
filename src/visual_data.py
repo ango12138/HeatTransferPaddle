@@ -130,8 +130,8 @@ class MatplotlibVision(object):
         self.input_name = input_name
         self.target_name = kwargs.get('target_name', None)
 
-        self.font_EN = {'family': 'Times New Roman', 'weight': 'normal', 'size': 20}
-        self.font_CHN = {'family': 'SimSun', 'weight': 'normal', 'size': 20}
+        self.font_EN = {'weight': 'normal', 'size': 20}
+        self.font_CHN = {'weight': 'normal', 'size': 20}
         self.box_line_width = 1.5
         self.font_size_label = 108
         self.font_size_cb = 72
@@ -140,18 +140,17 @@ class MatplotlibVision(object):
         # gs.update(top=0.95, bottom=0.07, left=0.1, right=0.9, wspace=0.5, hspace=0.7)
         # gs_dict = {key: value for key, value in gs.__dict__.items() if key in gs._AllowedKeys}
         # self.fig, self.axes = plt.subplots(len(self.field_name), 3, gridspec_kw=gs_dict, num=100, figsize=(30, 20))
-        self.font = {'family': 'SimSun', 'weight': 'normal', 'size': 20}
-        self.config = {"font.family": 'Times New Roman',
+        self.font = {'weight': 'normal', 'size': 20}
+        self.config = {
                        "font.size": 20,
                        "mathtext.fontset": 'stix',
-                       "font.serif": ['SimSun'], }
+                       }
         rcParams.update(self.config)
 
-    def plot_loss(self, fig, axs, y, label, std=None, std_factor=1.0,
-                  epoch=None, title=None, axis_log=(False, False), xylabels=('epoch', 'loss value')):
+    def plot_loss(self, fig, axs, x, y, label, std=None, std_factor=1.0,
+                  title=None, axis_log=(False, True), xylabels=('epoch', 'loss value')):
         # sbn.set_style('ticks')
         # sbn.set(color_codes=True)
-        x = np.arange(1, len(y) + 1) if epoch is None else epoch
         axs.plot(x, y, label=label) #对数坐标
 
         axs.grid(True)  # 添加网格
@@ -447,8 +446,8 @@ class MatplotlibVision(object):
                 #     ax[i][j].set_title(titles[j], fontdict=self.font_CHN)
                 cb = fig.colorbar(f_true, ax=axs[i][j])
                 cb.ax.tick_params(labelsize=15)
-                for l in cb.ax.yaxis.get_ticklabels():
-                    l.set_family('Times New Roman')
+                # for l in cb.ax.yaxis.get_ticklabels():
+                #     l.set_family('SimHei')
                 tick_locator = ticker.MaxNLocator(nbins=6)  # colorbar上的刻度值个数
                 cb.locator = tick_locator
                 cb.update_ticks()
@@ -524,8 +523,8 @@ class MatplotlibVision(object):
                 #     ax[i][j].set_title(titles[j], fontdict=self.font_CHN)
                 cb = fig.colorbar(f_true, ax=axs[i][j])
                 cb.ax.tick_params(labelsize=self.font['size'])
-                for l in cb.ax.yaxis.get_ticklabels():
-                    l.set_family('Times New Roman')
+                # for l in cb.ax.yaxis.get_ticklabels():
+                #     l.set_family('SimHei')
                 tick_locator = ticker.MaxNLocator(nbins=6)  # colorbar上的刻度值个数
                 cb.locator = tick_locator
                 cb.update_ticks()
@@ -586,8 +585,8 @@ class MatplotlibVision(object):
                 #     ax[i][j].set_title(titles[j], fontdict=self.font_CHN)
                 cb = fig.colorbar(f_true, ax=axs[i][j])
                 cb.ax.tick_params(labelsize=self.font['size'])
-                for l in cb.ax.yaxis.get_ticklabels():
-                    l.set_family('Times New Roman')
+                # for l in cb.ax.yaxis.get_ticklabels():
+                #     l.set_family('SimHei')
                 tick_locator = ticker.MaxNLocator(nbins=6)  # colorbar上的刻度值个数
                 cb.locator = tick_locator
                 cb.update_ticks()

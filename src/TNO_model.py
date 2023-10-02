@@ -536,7 +536,7 @@ class SpectralRegressor(nn.Layer):
                  n_hidden,
                  freq_dim,
                  out_dim,
-                 modes: int,
+                 modes,
                  num_spectral_layers: int = 2,
                  n_grid=None,
                  dim_feedforward=None,
@@ -561,15 +561,19 @@ class SpectralRegressor(nn.Layer):
         else:
             self.fc = nn.Linear(in_dim, n_hidden)
 
+        if isinstance(modes, int):
+            modes = [modes, modes]
+        assert not isinstance(modes, tuple or list)
+
         self.spectral_conv = nn.LayerList([spectral_conv(in_dim=n_hidden,
                                                          out_dim=freq_dim,
-                                                         modes=(modes, modes),
+                                                         modes=modes,
                                                          dropout=dropout,
                                                          activation=activation)])
         for _ in range(num_spectral_layers - 1):
             self.spectral_conv.append(spectral_conv(in_dim=freq_dim,
                                                     out_dim=freq_dim,
-                                                    modes=(modes, modes),
+                                                    modes=modes,
                                                     dropout=dropout,
                                                     activation=activation))
         if not last_activation:
@@ -658,7 +662,7 @@ class FourierTransformer2D(nn.Layer):
         grid = paddle.concat((gridx, gridy), axis=-1)
         return x.transpose((0, 2, 3, 1)), grid
 
-    def forward(self, node, weight=None):
+    def forward(self, x, grid=None, weight=None):
         '''
         - node: (batch_size, n, n, node_feats)
         - pos: (batch_size, n_s1*n_s2, pos_dim)
@@ -667,16 +671,20 @@ class FourierTransformer2D(nn.Layer):
             or (batch_size, n_s1*n_s2) when mass matrices are not provided (lumped mass)
         - grid: (batch_size, n, n, 2) excluding boundary
         '''
+        if len(x.shape) != len(grid.shape):
+            repeat_times = paddle.to_tensor([1]+grid.shape[1:-1]+[1], dtype='int32')
+            x = paddle.tile(x[:, None, None, :], repeat_times=repeat_times)
 
-        node, pos = self.pre_process(node)
-        bsz = node.shape[0]
-        n_s1 = node.shape[1]
-        n_s2 = node.shape[2]
+        pos = grid
+        bsz = x.shape[0]
+        n_s1 = x.shape[1]
+        n_s2 = x.shape[2]
         x_latent = []
         attn_weights = []
 
+
         # if not self.downscaler_size:
-        node = paddle.concat([node, pos], axis=-1)
+        node = paddle.concat([x, pos], axis=-1)
         x = self.downscaler(node)
         x = x.reshape((bsz, -1, self.n_hidden))
         pos = pos.reshape((bsz, -1, pos.shape[-1]))
@@ -716,7 +724,7 @@ class FourierTransformer2D(nn.Layer):
         if self.normalizer:
             x = self.normalizer.inverse_transform(x)
 
-        return x.transpose((0, 3, 1, 2))
+        return x
 
     def _initialize(self):
         self._get_feature()
@@ -863,6 +871,6 @@ if __name__ == '__main__':
     config = config['Transformer']
 
     Net_model = FourierTransformer2D(**config)
-    x = paddle.ones([10, 3, 64, 64], dtype=paddle.float32)
-    x = Net_model(x)
+    x = paddle.ones([10, 64, 64, 3], dtype=paddle.float32)
+    x = Net_model(x, x[..., :2])
     print(x.shape)

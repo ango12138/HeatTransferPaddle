@@ -9,6 +9,9 @@
 
 import os, sys, random, math
 import datetime, time
+
+import pandas as pd
+
 from process_data import HeatDataset
 from utilize import makeDirs, activation_dict, lossfunc_dict
 
@@ -24,19 +27,15 @@ from utilize import LogHistory
 
 class BasicModule(object):
 
-    def __init__(self, name, config, network_config):
+    def __init__(self, name, config, network_config, load_path=None):
 
         self.name = name
-        self.config = config
-        self.network_config = network_config
-
-        self._set_config()
-        self._set_path()
-        self._set_device()
-        self._set_network()
-        self._set_optim()
-        self._set_logger()
-        self._set_visual()
+        if load_path is None or not os.path.isdir(load_path):
+            self.config = config
+            self.network_config = network_config
+            self._initialize()
+        else:
+            self._load(load_path)
 
         self.characteristic = Characteristic()
         self.fields_metric = PhysicsLpLoss(p=2, samples_reduction=False, channel_reduction=False)  # 使用二阶范数
@@ -49,87 +48,175 @@ class BasicModule(object):
             sta_time = time.time()
             self.train_epoch(train_loader)
             train_epoch_time = time.time() - sta_time
-            train_metric, train_loss = self.valid_epoch(train_loader, 'train')
-            valid_train_time = time.time() - train_epoch_time - sta_time
-            valid_metric, valid_loss = self.valid_epoch(valid_loader, 'valid')
-            valid_valid_time = time.time() - valid_train_time - train_epoch_time - sta_time
 
-            self.loghistory.append(epoch_list=epoch,
-                                   time_train=train_epoch_time,
-                                   time_valid=valid_train_time + valid_valid_time,
-                                   loss_fields_train=train_loss['fields'], loss_flieds_valid=valid_loss['fields'],
-                                   loss_target_train=train_loss['target'], loss_target_valid=valid_loss['target'],
-                                   metric_fields_train=train_metric['fields'],
-                                   metric_fields_valid=valid_metric['fields'],
-                                   metric_target_train=train_metric['target'],
-                                   metric_target_valid=valid_metric['target'])
+            if epoch % self.print_freq == 0:
+                train_metric, train_loss = self.valid_epoch(train_loader, 'train')
+                valid_train_time = time.time() - train_epoch_time - sta_time
+                valid_metric, valid_loss = self.valid_epoch(valid_loader, 'valid')
+                valid_valid_time = time.time() - valid_train_time - train_epoch_time - sta_time
 
-            print('epoch: {:6d}, learning_rate: {:.3e}, '
-                  'train_cost: {:.2f}, valid_cost: {:.2f}'
-                  'train_epoch_loss: {:.3e}, valid_epoch_loss: {:.3e}'.
-                  format(epoch, self.optimizer.get_lr(),
-                         self.loghistory.time_train[-1], self.loghistory.time_valid[-1],
-                         self.loghistory.loss_train[-1].mean(), self.loghistory.loss_train[-1].mean()
-                         ))
+                self.loghistory.append(epoch=epoch,
+                                       time_train=train_epoch_time,
+                                       time_valid=valid_train_time + valid_valid_time,
+                                       loss_train=train_loss['fields'],
+                                       loss_valid=valid_loss['fields'],
+                                       loss_target_train=train_loss['target'],
+                                       loss_target_valid=valid_loss['target'],
+                                       metric_train=train_metric['fields'],
+                                       metric_valid=valid_metric['fields'],
+                                       metric_target_train=train_metric['target'],
+                                       metric_target_valid=valid_metric['target'])
 
-            # print(os.environ['CUDA_VISIBLE_DEVICES'])
-            star_time = time.time()
+                print('epoch: {:6d}, learning_rate: {:.3e}, '
+                      'train_cost: {:.2f}, valid_cost: {:.2f}, '
+                      'train_epoch_loss: {:.3e}, valid_epoch_loss: {:.3e}, '
+                      'train_target_loss: {:.3e}, valid_target_loss: {:.3e}'.
+                      format(epoch, self.optimizer.get_lr(),
+                             self.loghistory.time_train[-1], self.loghistory.time_valid[-1],
+                             self.loghistory.loss_train[-1].mean(), self.loghistory.loss_valid[-1].mean(),
+                             self.loghistory.loss_target_train[-1].mean(), self.loghistory.loss_target_valid[-1].mean()
+                             ))
 
-            if epoch > 0 and epoch % 5 == 0:
-                fig, axs = plt.subplots(1, 1, figsize=(15, 8), num=1)
-                self.visual.plot_loss(fig, axs, label='train',
+                fig, axs = plt.subplots(2, 1, figsize=(15, 8), num=1, constrained_layout=True)
+                self.visual.plot_loss(fig, axs[0], label='train_loss',
+                                      x=np.array(self.loghistory.epoch_list),
                                       y=np.array(self.loghistory.loss_train).mean(axis=-1),
                                       std=np.array(self.loghistory.loss_train).std(axis=-1))
-                self.visual.plot_loss(fig, axs, label='valid',
+                self.visual.plot_loss(fig, axs[0], label='valid_loss',
+                                      x=np.array(self.loghistory.epoch_list),
                                       y=np.array(self.loghistory.loss_valid).mean(axis=-1),
                                       std=np.array(self.loghistory.loss_valid).std(axis=-1))
+                self.visual.plot_loss(fig, axs[1], label='train_target_loss',
+                                      x=np.array(self.loghistory.epoch_list),
+                                      y=np.array(self.loghistory.loss_target_train).mean(axis=-1),
+                                      std=np.array(self.loghistory.loss_target_train).std(axis=-1))
+                self.visual.plot_loss(fig, axs[1], label='valid_target_loss',
+                                      x=np.array(self.loghistory.epoch_list),
+                                      y=np.array(self.loghistory.loss_target_valid).mean(axis=-1),
+                                      std=np.array(self.loghistory.loss_target_valid).std(axis=-1))
+
                 fig.suptitle('training process')
-                fig.savefig(self.train_path, 'training_process.jpg', dpi=300)
+                fig.savefig(os.path.join(self.train_path, 'training_process.jpg'), dpi=300)
                 plt.close(fig)
 
-            if epoch > 0 and epoch % 100 == 0:
+            if epoch % self.save_freq == 0:
                 paddle.save({
                     'epoch': epoch,
                     'config': self.config,
                     'network_config': self.network_config,
-                    'loghistory': self.loghistory,
-                    'net_model': self.net_model.state_dict(),
+                    'network': self.network.state_dict(),
                     'optimizer': self.optimizer.state_dict(),
                     'scheduler': self.scheduler.state_dict()},
                     os.path.join(self.work_path, 'last_model.pdparams'))
 
-    def valid(self):
-        pass
+                self.loghistory.save(os.path.join(self.work_path, 'loghistory.pkl'))
 
-    def infer(self):
-        pass
+    def infer(self, data_loader, data_name, show_nums=20):
+
+        all_fields_true = []
+        all_fields_pred = []
+        all_target_true = []
+        all_target_pred = []
+        all_design, all_coords = [], []
+
+        with paddle.no_grad():
+            for data in data_loader:
+                design, coords, fields_true, _ = data
+
+                fields_pred = self.network(design, coords)
+
+                design = data_loader.design_back(design)
+                coords = data_loader.coords_back(coords)
+                fields_true = data_loader.fields_back(fields_true)
+                fields_pred = data_loader.fields_back(fields_pred)
+
+                target_true = self.characteristic(fields_true, coords, design)
+                target_pred = self.characteristic(fields_pred, coords, design)
+
+                all_coords.append(coords.cpu().numpy())
+                all_design.append(design.cpu().numpy())
+                all_fields_true.append(fields_true.cpu().numpy())
+                all_fields_pred.append(fields_pred.cpu().numpy())
+                all_target_true.append(target_true.cpu().numpy())
+                all_target_pred.append(target_pred.cpu().numpy())
+
+        all_coords = np.concatenate(all_coords, axis=0)
+        all_design = np.concatenate(all_design, axis=0)
+        all_target_true = np.concatenate(all_target_true, axis=0)
+        all_target_pred = np.concatenate(all_target_pred, axis=0)
+        all_fields_true = np.concatenate(all_fields_true, axis=0)
+        all_fields_pred = np.concatenate(all_fields_pred, axis=0)
+
+        err_target = ((all_target_pred - all_target_true)
+                      / (np.max(all_target_true, axis=0) - np.min(all_target_true, axis=0)))
+
+        self.save_path = os.path.join(self.infer_path, data_name)
+        makeDirs(self.save_path)
+
+        pd.DataFrame(np.concatenate((all_target_true, all_target_true), axis=-1),
+                     columns=['Nu_true', 'f_true', 'Nu_pred', 'f_pred']).to_csv(
+            os.path.join(self.save_path, 'target.csv'))
+
+        # for tar_id in range(all_target_true.shape[-1]):
+        fig, axs = plt.subplots(2, 2, figsize=(32, 16), num=100, constrained_layout=True)
+        self.visual.plot_regression(fig, axs[0, 0], all_target_true[:, 0], all_target_pred[:, 0],
+                                    title='Nu')
+        self.visual.plot_regression(fig, axs[0, 1], all_target_true[:, 1], all_target_pred[:, 1],
+                                    title='f')
+
+        self.visual.plot_error(fig, axs[1, 0], err_target[:, 0], title='Nu error')
+        self.visual.plot_error(fig, axs[1, 1], err_target[:, 1], title='f error')
+        fig.savefig(os.path.join(self.infer_path, data_name, 'target_pred.jpg'),
+                    dpi=300, bbox_inches='tight')
+        plt.close(fig)
+
+        for fig_id in range(show_nums):
+            fig, axs = plt.subplots(4, 3, figsize=(32, 16), num=101, constrained_layout=True)
+            axs_flat = axs.flatten()
+            for ax in axs_flat:
+                ax.axis('off')
+                ax.set_frame_on(False)
+            self.visual.plot_fields_ms(fig, axs, all_fields_true[fig_id], all_fields_pred[fig_id], all_coords[fig_id])
+            fig.savefig(os.path.join(self.infer_path, data_name, 'solution_whole_' + str(fig_id) + '.jpg'),
+                        dpi=600, bbox_inches='tight')
+            plt.close(fig)
+
+            fig, axs = plt.subplots(4, 3, figsize=(32, 16), num=102)
+            axs_flat = axs.flatten()
+            for ax in axs_flat:
+                ax.axis('off')
+                ax.set_frame_on(False)
+            self.visual.plot_fields_ms(fig, axs, all_fields_true[fig_id], all_fields_pred[fig_id], all_coords[fig_id],
+                                       cmin_max=[[0.0010, 0.00008], [0.0025, 0.00042]])
+            fig.savefig(os.path.join(self.infer_path, data_name, 'solution_local_' + str(fig_id) + '.jpg'),
+                        dpi=600, bbox_inches='tight')
+            plt.close(fig)
 
     def train_epoch(self, train_loader):
 
-        sta_time = time.time()
-        self.net_model.train()
+        self.network.train()
         for data in train_loader:
             design, coords, fields, _ = data
             self.optimizer.clear_grad()
-            fields_ = self.net_model(design, coords)
+            fields_ = self.network(design, coords)
             loss = self.loss_func(fields_, fields)
             loss.backward()
             self.optimizer.step()
 
         self.scheduler.step()
 
-    def valid_epoch(self, data_loader, data_name):
+    def valid_epoch(self, data_loader):
 
         log_metric = {'target': [], 'fields': []}
         log_loss = {'target': [], 'fields': []}
 
-        sta_time = time.time()
-        self.net_model.eval()
+        self.network.eval()
         with paddle.no_grad():
             for data in data_loader:
                 design, coords, fields, _ = data
 
-                fields_ = self.net_model(design, coords)
+                fields_ = self.network(design, coords)
+                fields_loss = self.loss_func(fields_, fields).item()
 
                 design = data_loader.design_back(design)
                 coords = data_loader.coords_back(coords)
@@ -139,7 +226,6 @@ class BasicModule(object):
                 target = self.characteristic(fields, coords, design)
                 target_ = self.characteristic(fields_, coords, design)
 
-                fields_loss = self.loss_func(fields_, fields).item()
                 target_loss = self.loss_func(target_, target).item()
 
                 fields_metric = self.fields_metric(fields_, fields).cpu().numpy()
@@ -159,9 +245,67 @@ class BasicModule(object):
 
         return log_metric, log_loss
 
+
+
+    def _initialize(self):
+
+        self._set_config()
+        self._set_path()
+        self._set_device()
+        self._set_network()
+        self._set_optim()
+        self._set_logger()
+        self._set_visual()
+
+    def _load(self, load_path):
+
+        self._set_path(load_path)
+        try:
+            model_state = paddle.load(os.path.join(self.work_path, 'last_model.pdparams'))
+        except:
+            raise ValueError("the last_model.pdparams doesnt exist!")
+
+        try:
+            self.config = model_state['config']
+            self._set_config()
+        except:
+            raise ValueError("the config format is not correct!")
+
+        try:
+            self.network_config = model_state['network_config']
+        except:
+            raise ValueError("the network_config format is not correct!")
+
+        self._set_device()
+        self._set_network()
+        self._set_optim()
+        self._set_visual()
+        self._set_logger()
+
+        try:
+            load_network = model_state['network']
+            load_optimizer = model_state['optimizer']
+            load_scheduler = model_state['scheduler']
+            self.network.set_state_dict(load_network)
+            self.optimizer.set_state_dict(load_optimizer)
+            self.scheduler.set_state_dict(load_scheduler)
+        except:
+            raise ValueError("the netmodel can't be loaded!")
+
+        # 记录读取
+        try:
+            self.loghistory.load(os.path.join(self.work_path, 'loghistory.pkl'))
+        except:
+            raise ValueError("the loghistory doesn't exist!")
+
+
+    # def _load_config(self, load_config):
+    #     self.config.update(load_config)
+    #     self._set_config()
+
     def _set_config(self):
-        all_attr = list(self.config.keys())
-        for key in all_attr:
+        all_keys = list(self.config.keys())
+        for key in all_keys:
             setattr(self, key, self.config[key])
 
     def _set_device(self):
@@ -172,43 +316,52 @@ class BasicModule(object):
             device = paddle.device.set_device('cpu')
         self.device = device
 
-    def _set_path(self):
+        print('device: {}'.format(self.device))
 
-        current_datetime = datetime.datetime.now()
-        formatted_datetime = current_datetime.strftime("%Y-%m-%d-%H-%M")
-        self.work_path = os.path.join(self.root_path, 'work', self.name, formatted_datetime)
+    def _set_path(self, path=None):
+
+        if path is None:
+            current_datetime = datetime.datetime.now()
+            formatted_datetime = current_datetime.strftime("%Y-%m-%d-%H-%M")
+            self.work_path = os.path.join(self.root_path, 'work', self.name, formatted_datetime)
+        else:
+            self.work_path = path
+
         self.train_path = os.path.join(self.work_path, 'train')
         self.valid_path = os.path.join(self.work_path, 'valid')
         self.infer_path = os.path.join(self.work_path, 'infer')
 
         makeDirs([self.work_path, self.train_path, self.valid_path, self.infer_path])
+        print('work path is : {}'.format(self.work_path))
+
 
     def _set_network(self):
         if 'FNO' in self.name:
             from FNO_model import FNO2d
-            self.net_model = FNO2d(**self.network_config)
+            self.network = FNO2d(**self.network_config)
         elif 'CNN' in self.name:
             from CNN_model import UNet2d
-            self.net_model = UNet2d(**self.network_config)
+            self.network = UNet2d(**self.network_config)
         elif 'DON' in self.name:
             from DON_model import DeepONetMulti
-            self.net_model = DeepONetMulti(**self.network_config)
+            self.network = DeepONetMulti(**self.network_config)
         elif 'MLP' in self.name:
             from DON_model import FcnMulti
-            self.net_model = FcnMulti(**self.network_config)
+            self.network = FcnMulti(**self.network_config)
         elif 'TNO' in self.name:
             from TNO_model import FourierTransformer2D
-            self.net_model = FourierTransformer2D(**self.network_config)
-        self.net_model = self.net_model.to(self.device)
+            self.network = FourierTransformer2D(**self.network_config)
+        self.network = self.network.to(self.device)
+        print('network name is : {}'.format(self.name))
 
     def _set_optim(self):
 
-        model_parameters = filter(lambda p: ~p.stop_gradient, self.net_model.parameters())
+        model_parameters = filter(lambda p: ~p.stop_gradient, self.network.parameters())
         params = sum([np.prod(p.shape) for p in model_parameters])
         print("Initialized {} with {} trainable params ".format(self.name, params))
 
         self.loss_func = lossfunc_dict[self.loss_name]
-        self.optimizer = optim.Adam(parameters=self.net_model.parameters(),
+        self.optimizer = optim.Adam(parameters=self.network.parameters(),
                                     learning_rate=self.learning_rate,
                                     beta1=self.learning_beta[0], beta2=self.learning_beta[1],
                                     weight_decay=self.weight_decay)
@@ -219,7 +372,8 @@ class BasicModule(object):
 
     def _set_logger(self):
 
-        self.loghistory = LogHistory(log_names=('fields', ''))
+        self.loghistory = LogHistory(log_names=('loss_target_train', 'loss_target_valid',
+                                                'metric_target_train', 'metric_target_valid'))
 
     def _set_visual(self):
 
@@ -347,10 +501,10 @@ class PhysicsLpLoss(object):
     def forward(self, x, y):
 
         if paddle.is_tensor(x):
-            dif_norms = paddle.norm(x.reshape(x.shape[0], -1, x.shape[-1]) -
-                                    y.reshape(x.shape[0], -1, x.shape[-1]), self.p, 1)
+            dif_norms = paddle.norm(x.reshape((x.shape[0], -1, x.shape[-1])) -
+                                    y.reshape((x.shape[0], -1, x.shape[-1])), self.p, 1)
 
-            all_norms = paddle.norm(y.reshape(x.shape[0], -1, x.shape[-1]), self.p, 1)
+            all_norms = paddle.norm(y.reshape((x.shape[0], -1, x.shape[-1])), self.p, 1)
 
             if self.relative:
                 res_norms = dif_norms / (all_norms + 1e-12)
@@ -390,7 +544,7 @@ if __name__ == "__main__":
 
     import yaml
 
-    with open(os.path.join('../all_config.yml')) as f:
+    with open(os.path.join('../default_config.yml')) as f:
         config = yaml.full_load(f)
 
     general_config = config['general_config']

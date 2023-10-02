@@ -146,11 +146,10 @@ class DataNormer(object):
         """
         if paddle.is_tensor(x):
             if self.method == "min-max":
-                x = (x + 1) / 2 * (paddle.to_tensor(self.max, place=x.device)
-                                   - paddle.to_tensor(self.min, place=x.device) + 1e-10) + paddle.to_tensor(self.min,
-                                                                                                     place=x.device)
+                x = (x + 1) / 2 * (paddle.to_tensor(self.max)
+                                   - paddle.to_tensor(self.min) + 1e-10) + paddle.to_tensor(self.min)
             elif self.method == "mean-std":
-                x = x * (paddle.to_tensor(self.std + 1e-10, place=x.device)) + paddle.to_tensor(self.mean, place=x.device)
+                x = x * (paddle.to_tensor(self.std + 1e-10)) + paddle.to_tensor(self.mean)
         else:
             if self.method == "min-max":
                 x = (x + 1) / 2 * (self.max - self.min + 1e-10) + self.min
@@ -236,8 +235,8 @@ class HeatDataset(Dataset):
             self.shuffle_idx = np.random.permutation(self.data.length)
 
         self.data.design = reader.read_field('data')[self.shuffle_idx]
-        self.data.coords = reader.read_field('grids')[..., :2][self.shuffle_idx]
-        self.data.fields = reader.read_field('field')[self.shuffle_idx]
+        self.data.coords = reader.read_field('grids')[:, ::2, :, :2][self.shuffle_idx]   # 注意原始数据在x方向分辨率降低了1倍
+        self.data.fields = reader.read_field('field')[:, ::2, :, :][self.shuffle_idx]
         self.data.target = np.concatenate((reader.read_field('Nu'), reader.read_field('f')), axis=-1)[self.shuffle_idx]
 
 
@@ -276,6 +275,15 @@ class HeatDataset(Dataset):
         self.norm.coords = DataNormer(self.data.coords, method='min-max')
         self.norm.target = None
 
+    def train(self):
+        self._set_mode(0)
+    def valid(self):
+        self._set_mode(1)
+    def test(self):
+        self._set_mode(2)
+    def _set_mode(self, mode_id):
+        self.mode = mode_id
+
     def __len__(self):
         return self.data.length
 
@@ -285,7 +293,6 @@ class HeatDataset(Dataset):
 
             coords = self.data.coords[idx]
             fields = self.data.fields[idx]
-
             design = self.data.design[idx]
             target = self.data.target[idx]
 
@@ -305,22 +312,22 @@ class HeatDataset(Dataset):
                     fields = fields[::self.sampler['sample_size'][0], ::self.sampler['sample_size'][1]]
             else:
                 pass
-
-            if self.norm.design is not None:
-                design = self.norm.design.norm(design)
-
-            if self.norm.fields is not None:
-                fields = self.norm.fields.norm(fields)
-
-            if self.norm.coords is not None:
-                coords = self.norm.coords.norm(coords)
-
-            if self.norm.target is not None:
-                target = self.norm.target.norm(target)
-
-            return design, coords, fields, target
         else:
-            return self.data.design[idx], self.data.coords[idx], self.data.fields[idx], self.data.target[idx]
+            coords = self.data.coords[idx]
+            fields = self.data.fields[idx]
+            design = self.data.design[idx]
+            target = self.data.target[idx]
+
+        if self.norm.design is not None:
+            design = self.norm.design.norm(design)
+        if self.norm.fields is not None:
+            fields = self.norm.fields.norm(fields)
+        if self.norm.coords is not None:
+            coords = self.norm.coords.norm(coords)
+        if self.norm.target is not None:
+            target = self.norm.target.norm(target)
+
+        return design, coords, fields, target
 
 
 class HeatDataLoader(DataLoader):

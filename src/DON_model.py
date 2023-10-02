@@ -14,7 +14,7 @@ import paddle.nn.functional as F
 from utilize import activation_dict, params_initial
 from typing import Any, List, Tuple, Union
 
-class FcnSingle(nn.Layer):
+class MLP(nn.Layer):
     def __init__(self, planes: list or tuple, activation="gelu", last_activation=False):
         # =============================================================================
         #     Inspired by M. Raissi a, P. Perdikaris b,∗, G.E. Karniadakis.
@@ -22,7 +22,7 @@ class FcnSingle(nn.Layer):
         #     involving nonlinear partial differential equations".
         #     Journal of Computational Physics.
         # =============================================================================
-        super(FcnSingle, self).__init__()
+        super(MLP, self).__init__()
         self.planes = planes
         self.active = activation_dict[activation]
 
@@ -60,14 +60,14 @@ class FcnSingle(nn.Layer):
 
 
 class FcnMulti(nn.Layer):
-    def __init__(self, in_dim, out_dim, planes: list, activation="gelu"):
+    def __init__(self, in_dim, out_dim, planes: list, steps=1, activation="gelu"):
         # =============================================================================
         #     Inspired by Haghighat Ehsan, et all.
         #     "A physics-informed deep learning framework for inversion and surrogate modeling in solid mechanics"
         #     Computer Methods in Applied Mechanics and Engineering.
         # =============================================================================
         super(FcnMulti, self).__init__()
-        self.planes = [in_dim] + planes + [out_dim]
+        self.planes = [steps * in_dim + 2,] + planes + [out_dim]
         self.active = activation_dict[activation]
 
         self.layers = nn.LayerList()
@@ -92,11 +92,18 @@ class FcnMulti(nn.Layer):
                 b = params_initial('constant', shape=m.bias.shape)
                 m.bias.set_value(b)
 
-    def forward(self, in_var):
+    def forward(self, x, grid):
         """
         forward compute
         :param in_var: (batch_size, ..., input_dim)
         """
+
+        if len(x.shape) != len(grid.shape):
+            repeat_times = paddle.to_tensor([1]+grid.shape[1:-1]+[1], dtype='int32')
+            x = paddle.tile(x[:, None, None, :], repeat_times=repeat_times)
+
+        in_var = paddle.concat((x, grid), axis=-1)
+
         y = []
         for i in range(self.planes[-1]):
             y.append(self.layers[i](in_var))
@@ -125,9 +132,9 @@ class DeepONetMulti(nn.Layer):
         self.branches = nn.LayerList() # 分支网络
         self.trunks = nn.LayerList() # 主干网络
         for dim in operator_dims:
-            self.branches.append(FcnSingle([dim] + planes_branch, activation=activation))# FcnSingle是从basic_layers里导入的
+            self.branches.append(MLP([dim] + planes_branch, activation=activation))# FcnSingle是从basic_layers里导入的
         for _ in range(out_dim):
-            self.trunks.append(FcnSingle([in_dim] + planes_trunk, activation=activation))
+            self.trunks.append(MLP([in_dim] + planes_trunk, activation=activation))
 
         self.reset_parameters()
 
@@ -143,7 +150,7 @@ class DeepONetMulti(nn.Layer):
                 b = params_initial('constant', shape=m.bias.shape)
                 m.bias.set_value(b)
 
-    def forward(self, u_vars, y_var, size_set=True):
+    def forward(self, u_vars, y_var, size_set=False):
         """
         forward compute
         :param u_vars: tensor list[(batch_size, ..., operator_dims[0]), (batch_size, ..., operator_dims[1]), ...]
@@ -151,8 +158,13 @@ class DeepONetMulti(nn.Layer):
         :param size_set: bool, true for standard inputs, false for reduce points number in operator inputs
         """
         B = 1.
+
+        if not isinstance(u_vars, list or tuple):
+            u_vars = [u_vars,]
+
         for u_var, branch in zip(u_vars, self.branches):
             B *= branch(u_var)
+
         if not size_set:
             B_size = list(y_var.shape[1:-1])
             for i in range(len(B_size)):
@@ -175,13 +187,17 @@ if __name__ == "__main__":
     y = layer(us, x)
     print(y.shape)
 
-    x = paddle.ones([10, 64, 64, 3])
-    layer = FcnSingle([3, 64, 64, 10])
-    y = layer(x)
+    us = paddle.ones([10, 10])
+    x = paddle.ones([10, 64, 64, 2])
+    layer = DeepONetMulti(in_dim=2, out_dim=5, operator_dims=[10,],
+                          planes_branch=[64] * 3, planes_trunk=[64] * 2)
+    y = layer(us, x, size_set=False)
     print(y.shape)
 
-    x = paddle.ones([10, 64, 64, 3])
-    layer = FcnMulti(in_dim=3, out_dim=5, planes=[64, 64])
-    y = layer(x)
+
+    x = paddle.ones([10, 3])
+    g = paddle.ones([10, 64, 64, 2])
+    layer = FcnMulti(in_dim=3, out_dim=5, steps=1, planes=[64, 64])
+    y = layer(x, g)
     print(y.shape)
 
