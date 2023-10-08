@@ -13,7 +13,7 @@ from process_data import HeatDataset, HeatDataLoader
 from neural_model import BasicModule
 
 # 读入原始配置文件
-with open(os.path.join('default_config.yml'), encoding='utf-8') as f:
+with open(os.path.join('DON.yaml'), encoding='utf-8') as f:
     config = yaml.full_load(f)
 
 basic_config = config['basic_config']

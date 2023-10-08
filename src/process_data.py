@@ -243,7 +243,7 @@ class HeatDataset(Dataset):
     def data_split(self):
 
         self.train_len = int(self.data.length * self.training_size)
-        self.valid_len = max(int(self.data.length * (1 - self.training_size - self.test_size)), 200)
+        self.valid_len = int(self.data.length * (1 - self.training_size - self.test_size))
         self.test_len = self.data.length - self.train_len - self.valid_len
 
         if self.mode == self.TRAIN:

@@ -9,6 +9,8 @@ import os
 import logging
 import sys
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.gridspec as gridspec
 import pandas as pd
 import matplotlib.pyplot as plt

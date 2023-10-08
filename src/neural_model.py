@@ -3,8 +3,8 @@
 # @copyright (c) 2023 Baidu.com, Inc. Allrights Reserved
 @Time ： 2023/9/30 15:09
 @Author ： Liu Tianyuan (liutianyuan02@baidu.com)
-@Site ：run_train.py
-@File ：run_train.py
+@Site ：neural_model.py
+@File ：neural_model.py
 """
 
 import os, sys, random, math
@@ -20,6 +20,8 @@ import paddle
 import paddle.nn as nn
 import paddle.optimizer as optim
 
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from visual_data import MatplotlibVision
 from utilize import LogHistory
@@ -58,15 +60,16 @@ class BasicModule(object):
                 valid_metric, valid_loss = self.valid_epoch(valid_loader)
                 valid_valid_time = time.time() - valid_train_time - train_epoch_time - sta_time
 
+
                 self.loghistory.append(epoch=epoch,
                                        time_train=train_epoch_time,
                                        time_valid=valid_train_time + valid_valid_time,
-                                       loss_train=train_loss['fields'],
-                                       loss_valid=valid_loss['fields'],
-                                       loss_target_train=train_loss['target'],
-                                       loss_target_valid=valid_loss['target'],
-                                       metric_train=train_metric['fields'],
-                                       metric_valid=valid_metric['fields'],
+                                       loss_train=train_loss['fields'], #训练总损失
+                                       loss_valid=valid_loss['fields'], #验证总损失
+                                       loss_target_train=train_loss['target'],  # Nusselt 和 Fanning 训练总损失
+                                       loss_target_valid=valid_loss['target'],  # Nusselt 和 Fanning 验证总损失
+                                       metric_train=train_metric['fields'],  # 各个物理场训练损失
+                                       metric_valid=valid_metric['fields'],  # 各个物理场验证损失
                                        metric_target_train=train_metric['target'],
                                        metric_target_valid=valid_metric['target'])
 
@@ -79,6 +82,7 @@ class BasicModule(object):
                              self.loghistory.loss_train[-1].mean(), self.loghistory.loss_valid[-1].mean(),
                              self.loghistory.loss_target_train[-1].mean(), self.loghistory.loss_target_valid[-1].mean()
                              ))
+
 
                 fig, axs = plt.subplots(2, 1, figsize=(15, 8), num=1, constrained_layout=True)
                 self.visual.plot_loss(fig, axs[0], label='train_loss',
@@ -99,8 +103,63 @@ class BasicModule(object):
                                       std=np.array(self.loghistory.loss_target_valid).std(axis=-1))
 
                 fig.suptitle('training process')
-                fig.savefig(os.path.join(self.train_path, 'training_process.jpg'), dpi=300)
+                fig.savefig(os.path.join(self.train_path, 'training_process.jpg'), dpi=600)
                 plt.close(fig)
+
+                pd.DataFrame(np.concatenate((
+                                             np.array(self.loghistory.loss_train).mean(axis=-1),
+                                             np.array(self.loghistory.loss_train).std(axis=-1),
+                                             np.array(self.loghistory.loss_valid).mean(axis=-1),
+                                             np.array(self.loghistory.loss_valid).std(axis=-1),
+                                             np.array(self.loghistory.loss_target_train).mean(axis=-1),
+                                             np.array(self.loghistory.loss_target_train).std(axis=-1),
+                                             np.array(self.loghistory.loss_target_valid).mean(axis=-1),
+                                             np.array(self.loghistory.loss_target_valid).std(axis=-1)),axis=-1).reshape(-1, 8),
+                             columns=['train_loss_mean', 'train_loss_std', 'valid_loss_mean',
+                                      'valid_loss_std', 'train_target_loss_mean', 'train_target_loss_std',
+                                      'valid_target_loss_mean','valid_target_loss_std']).to_csv(
+                    os.path.join(self.train_path, 'training.csv'))
+
+
+                fig, axs = plt.subplots(2, 1, figsize=(15, 8), num=2, constrained_layout=True)
+                labels = ['valid_loss_mean_' + name for name in self.visual.field_name]
+                self.visual.plot_loss(fig, axs[0], label=labels,
+                                      x=np.array(self.loghistory.epoch_list),
+                                      y=np.array(self.loghistory.metric_valid).mean(axis=1))
+                labels = ['valid_loss_max_' + name for name in self.visual.field_name]
+                self.visual.plot_loss(fig, axs[1], label=labels,
+                                      x=np.array(self.loghistory.epoch_list),
+                                      y=np.array(self.loghistory.metric_valid).max(axis=1))
+                fig.suptitle('fields_valid_process')
+                fig.savefig(os.path.join(self.train_path, 'fields_valid.jpg'), dpi=600)
+                plt.close(fig)
+
+                pd.DataFrame(np.concatenate((
+                                             np.array(self.loghistory.metric_valid).mean(axis=1),
+                                             np.array(self.loghistory.metric_valid).max(axis=1)), axis=-1),
+                             columns=['p_mean', 't_mean', 'u_mean','v_mean',
+                                      'p_max', 't_max', 'u_max','v_max']).to_csv(
+                    os.path.join(self.train_path, 'fields.csv'))
+
+
+
+                fig, axs = plt.subplots(2, 1, figsize=(15, 8), num=3, constrained_layout=True)
+                self.visual.plot_loss(fig, axs[0], label=['valid_loss_mean_nu', 'valid_loss_mean_f'],
+                                       x=np.array(self.loghistory.epoch_list),
+                                       y=np.array(self.loghistory.metric_target_valid).mean(axis=1))
+                self.visual.plot_loss(fig, axs[1], label=['valid_loss_max_nu', 'valid_loss_max_f'],
+                                       x=np.array(self.loghistory.epoch_list),
+                                       y=np.array(self.loghistory.metric_target_valid).max(axis=1))
+                fig.suptitle('target_valid_process')
+                fig.savefig(os.path.join(self.train_path, 'target_valid.jpg'), dpi=600)
+                plt.close(fig)
+
+                pd.DataFrame(np.concatenate((
+                                             np.array(self.loghistory.metric_target_valid).mean(axis=1),
+                                             np.array(self.loghistory.metric_target_valid).max(axis=1)),
+                                            axis=-1),
+                             columns=['nu_mean', 'nu_max', 'f_mean', 'f_max']).to_csv(
+                    os.path.join(self.train_path, 'loss_target.csv'))
 
             if epoch % self.save_freq == 0:
                 paddle.save({
@@ -150,18 +209,25 @@ class BasicModule(object):
         all_fields_true = np.concatenate(all_fields_true, axis=0)
         all_fields_pred = np.concatenate(all_fields_pred, axis=0)
 
+        np.save(os.path.join(self.infer_path, data_name + '_true.npy'), all_fields_true)
+        np.save(os.path.join(self.infer_path, data_name + '_pred.npy'),  all_fields_pred)
+        np.save(os.path.join(self.infer_path, data_name + '.npy'), all_coords)
+
         err_target = ((all_target_pred - all_target_true)
                       / (np.max(all_target_true, axis=0) - np.min(all_target_true, axis=0)))
+        mse_target =  ((all_target_pred - all_target_true) / all_target_true) * 100
 
         self.save_path = os.path.join(self.infer_path, data_name)
         makeDirs(self.save_path)
 
-        pd.DataFrame(np.concatenate((all_target_true, all_target_true), axis=-1),
-                     columns=['Nu_true', 'f_true', 'Nu_pred', 'f_pred']).to_csv(
+        pd.DataFrame(np.concatenate((all_target_true, all_target_pred, mse_target), axis=-1),
+                     columns=['Nu_true', 'f_true',  'Nu_pred', 'f_pred', 'nu_error' , 'f_error']).to_csv(
             os.path.join(self.save_path, 'target.csv'))
 
-        # for tar_id in range(all_target_true.shape[-1]):
-        fig, axs = plt.subplots(2, 2, figsize=(32, 16), num=100, constrained_layout=True)
+        # for epoch in range(1, self.total_epoch + 1):
+        #     if epoch % 200 == 0:
+                # for tar_id in range(all_target_true.shape[-1]):
+        fig, axs = plt.subplots(2, 2, figsize=(32, 16), num=1, constrained_layout=True)
         self.visual.plot_regression(fig, axs[0, 0], all_target_true[:, 0], all_target_pred[:, 0],
                                     title='Nu')
         self.visual.plot_regression(fig, axs[0, 1], all_target_true[:, 1], all_target_pred[:, 1],
@@ -170,31 +236,34 @@ class BasicModule(object):
         self.visual.plot_error(fig, axs[1, 0], err_target[:, 0], title='Nu error')
         self.visual.plot_error(fig, axs[1, 1], err_target[:, 1], title='f error')
         fig.savefig(os.path.join(self.infer_path, data_name, 'target_pred.jpg'),
-                    dpi=300, bbox_inches='tight')
+                    dpi=600, bbox_inches='tight')
         plt.close(fig)
 
         for fig_id in range(show_nums):
-            fig, axs = plt.subplots(4, 3, figsize=(32, 16), num=101, constrained_layout=True)
+            fig, axs = plt.subplots(4, 3, figsize=(32, 16), num=2, constrained_layout=True)
             axs_flat = axs.flatten()
             for ax in axs_flat:
                 ax.axis('off')
                 ax.set_frame_on(False)
-            self.visual.plot_fields_ms(fig, axs, all_fields_true[fig_id], all_fields_pred[fig_id], all_coords[fig_id])
+            self.visual.plot_fields_ms(fig, axs, all_fields_true[fig_id], all_fields_pred[fig_id],
+                                       all_coords[fig_id])
             fig.savefig(os.path.join(self.infer_path, data_name, 'solution_whole_' + str(fig_id) + '.jpg'),
                         dpi=600, bbox_inches='tight')
             plt.close(fig)
 
-            fig, axs = plt.subplots(4, 3, figsize=(32, 16), num=102)
+            fig, axs = plt.subplots(4, 3, figsize=(32, 16), num=3)
             axs_flat = axs.flatten()
             for ax in axs_flat:
                 ax.axis('off')
                 ax.set_frame_on(False)
-            self.visual.plot_fields_ms(fig, axs, all_fields_true[fig_id], all_fields_pred[fig_id], all_coords[fig_id],
+            self.visual.plot_fields_ms(fig, axs, all_fields_true[fig_id], all_fields_pred[fig_id],
+                                       all_coords[fig_id],
                                        cmin_max=[[0.0010, 0.00008], [0.0025, 0.00042]])
             fig.savefig(os.path.join(self.infer_path, data_name, 'solution_local_' + str(fig_id) + '.jpg'),
                         dpi=600, bbox_inches='tight')
             plt.close(fig)
 
+    #  训练函数
     def train_epoch(self, train_loader):
 
         self.network.train()
@@ -208,6 +277,8 @@ class BasicModule(object):
 
         self.scheduler.step()
 
+
+# 验证函数
     def valid_epoch(self, data_loader):
 
         log_metric = {'target': [], 'fields': []}
@@ -230,6 +301,8 @@ class BasicModule(object):
                 target_ = self.characteristic(fields_, coords, design)
 
                 target_loss = self.loss_func(target_, target).item()
+
+
 
                 fields_metric = self.fields_metric(fields_, fields).cpu().numpy()
                 target_metric = self.target_metric(target_, target).cpu().numpy()
@@ -340,19 +413,19 @@ class BasicModule(object):
 
     def _set_network(self):
         if 'FNO' in self.name:
-            from FNO_model import FNO2d
+            from src.FNO_model import FNO2d
             self.network = FNO2d(**self.network_config)
         elif 'CNN' in self.name:
-            from CNN_model import UNet2d
+            from src.CNN_model import UNet2d
             self.network = UNet2d(**self.network_config)
         elif 'DON' in self.name:
-            from DON_model import DeepONetMulti
+            from src.DON_model import DeepONetMulti
             self.network = DeepONetMulti(**self.network_config)
         elif 'MLP' in self.name:
-            from DON_model import FcnMulti
+            from src.DON_model import FcnMulti
             self.network = FcnMulti(**self.network_config)
         elif 'TNO' in self.name:
-            from TNO_model import FourierTransformer2D
+            from src.TNO_model import FourierTransformer2D
             self.network = FourierTransformer2D(**self.network_config)
         self.network = self.network.to(self.device)
         print('network name is : {}'.format(self.name))
@@ -383,7 +456,7 @@ class BasicModule(object):
 
         self.visual = MatplotlibVision(self.work_path, input_name=('x', 'y'), field_name=('P', 'T', 'U', 'V'))
 
-
+#积分计算性能参数 Nusselt 和 Fanning
 class Characteristic(nn.Layer):
 
     def __init__(self):
@@ -489,7 +562,7 @@ class Characteristic(nn.Layer):
         return result
 
 
-# loss function with rel/abs Lp loss
+# 物理场及性能参数的相对范数计算 ：物理场 L2, 性能参数 L1
 class PhysicsLpLoss(object):
     def __init__(self, p=2, relative=True, samples_reduction=True, channel_reduction=False):
         super(PhysicsLpLoss, self).__init__()
@@ -502,12 +575,11 @@ class PhysicsLpLoss(object):
         self.channel_reduction = channel_reduction
         self.samples_reduction = samples_reduction
 
-    def forward(self, x, y):
+    def forward(self, x, y):     #x预测场； y真实场
 
         if paddle.is_tensor(x):
             dif_norms = paddle.norm(x.reshape((x.shape[0], -1, x.shape[-1])) -
                                     y.reshape((x.shape[0], -1, x.shape[-1])), self.p, 1)
-
             all_norms = paddle.norm(y.reshape((x.shape[0], -1, x.shape[-1])), self.p, 1)
 
             if self.relative:
@@ -516,10 +588,10 @@ class PhysicsLpLoss(object):
                 res_norms = dif_norms
 
             if self.samples_reduction:
-                res_norms = paddle.mean(res_norms, axis=0)
+                res_norms = paddle.mean(res_norms, axis=0)    #在样本角度平均
 
             if self.channel_reduction:
-                res_norms = paddle.mean(res_norms, axis=-1)
+                res_norms = paddle.mean(res_norms, axis=-1)   #在物理场角度平均
 
         else:
             dif_norms = np.linalg.norm(x.reshape(x.shape[0], -1, x.shape[-1]) -
@@ -572,7 +644,7 @@ if __name__ == "__main__":
         Nu_Fa.append(HT_computer(fields, coords, design).cpu())
 
     Nu_Fa = paddle.concat(Nu_Fa, axis=0).numpy()
-    import matplotlib.pyplot as plt
+
     import visual_data as visual
 
     logger = visual.MatplotlibVision("\\")

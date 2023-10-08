@@ -1,9 +1,9 @@
 basic_config:
   root_path: './'
   data_name: 'dim_pro8_single_all.mat'
-  training_size: 0.8
+  training_size: 0.6
   batch_size: 64
-  total_epoch: 200
+  total_epoch: 500
   print_freq: 2
   save_freq: 40
   loss_name: 'mse'
@@ -13,8 +13,9 @@ basic_config:
     - 0.9
     - 0.99
   learning_milestones:
-    - 150
-    - 200
+    - 300
+    - 400
+    - 500
   learning_gamma: 0.1
 
 CNN_model:
@@ -29,7 +30,9 @@ CNN_model:
 FNO_model:
   in_dim: 10
   out_dim: 4
-  modes: 12
+  modes:
+    - 128
+    - 20
   width: 32
   depth: 4
   steps: 1    # Number of steps to unroll, should be 1 in this problem
@@ -46,6 +49,8 @@ DON_model:
     - 64
     - 64
     - 64
+    - 64
+    - 64
   planes_trunk:
     - 64
     - 64
@@ -59,6 +64,8 @@ MLP_model:
   steps: 1
   planes:
     - 64
+    - 64
+    - 128
     - 64
     - 64
   activation: 'gelu'
@@ -91,7 +98,9 @@ TNO_model:
   freq_dim: 32
   num_regressor_layers: 2
   regressor_activation: gelu
-  fourier_modes: 16
+  fourier_modes:
+    - 128
+    - 20
   spacial_dim: 2
   spacial_fc: False
   dropout: 0.0
