@@ -18,63 +18,63 @@
 
 |_📁 data                                                             #部分数据集
 
-​     |_ 📄 dim_pro8_single_try.mat
+​       |_ 📄 dim_pro8_single_try.mat
 
 |_📁 config
 
-​     |_📄 CNN.yaml                                             # CNN的网络参数设置
+​       |_📄 CNN.yaml                                             # CNN的网络参数设置
 
-​     |_📄 DNO.yaml                                            # DNO的网络参数设置
+​       |_📄 DNO.yaml                                            # DNO的网络参数设置
 
-​     |_📄 FNO.yaml                                             # FNO的网络参数设置
+​       |_📄 FNO.yaml                                             # FNO的网络参数设置
 
-​     |_📄 MLP.yaml                                             # FNN的网络参数设置
+​       |_📄 MLP.yaml                                             # FNN的网络参数设置
 
-​     |_📄 TNO.yaml                                            # TNO的网络参数设置
+​       |_📄 TNO.yaml                                            # TNO的网络参数设置
 
 |_📁 src
 
-​    |_📄 process_data                                       # 读取matlab格式数据；数据归一化；划分数据集及数据采样
+​       |_📄 process_data                                       # 读取matlab格式数据；数据归一化；划分数据集及数据采样
 
-​    |_📄 CNN_model.py                                   # 二维U-Net model paddle代码
+​       |_📄 CNN_model.py                                   # 二维U-Net model paddle代码
 
-​    |_📄 DON_model.py                                  # 二维DeepONet 以及 FNN model paddle代码
+​       |_📄 DON_model.py                                  # 二维DeepONet 以及 FNN model paddle代码
 
-​    |_📄 FNO_model.py                                   # 二维Fourier Neural Operator paddle代码
+​       |_📄 FNO_model.py                                   # 二维Fourier Neural Operator paddle代码
 
-​    |_📄 TNO_model.py                                   # 二维Transformer paddle代码, 支持多种attention机制以及两种Regressor
+​       |_📄 TNO_model.py                                   # 二维Transformer paddle代码, 支持多种attention机制以及两种Regressor
 
-​    |_📄 neural_model.py                               # 网络的训练及验证；性能参数的积分求解；可视化损失函数、物理场、性能参数
+​       |_📄 neural_model.py                               # 网络的训练及验证；性能参数的积分求解；可视化损失函数、物理场、性能参数
 
-​    |_📄 process_data.py                                # 数据读取；数据归一化；数据集划分；
+​       |_📄 process_data.py                                # 数据读取；数据归一化；数据集划分；
 
-​    |_📄 utilize.py                                             # 激活函数；损失函数；初始化权重；记录训练信息
+​       |_📄 utilize.py                                             # 激活函数；损失函数；初始化权重；记录训练信息
 
-​    |_📄 visual_data.py                                    # 可视化代码
+​       |_📄 visual_data.py                                    # 可视化代码
 
 |_📁 work                                                       # 训练过程、验证结果、测试结果，统计结果文件保存
 
-​    |_📁 DON                                                   # DeepONet训练结果保存
+​      |_📁 DON                                                   # DeepONet训练结果保存
 
-​         |_📁 2023-10-07-10-43                       # 以时间戳命名对结果保存
+​           |_📁 2023-10-07-10-43                       # 以时间戳命名对结果保存
 
-​                |_📁 infer                                       # 模型训练、验证、测试结果保存
+​                  |_📁 infer                                       # 模型训练、验证、测试结果保存
 
-​                |_📁 train                                      # 训练结果保存
+​                  |_📁 train                                      # 训练结果保存
 
-​                |_📁 valid                                      # 验证结果保存
+​                  |_📁 valid                                      # 验证结果保存
 
-​                |_📄 last_model.pdparams        # 保存的模型文件
+​                  |_📄 last_model.pdparams        # 保存的模型文件
 
-​                |_📄 loghistory.pkl                       # 保存的epoch、训练和预测时间、物理场及性能参数损失文件
+​                  |_📄 loghistory.pkl                       # 保存的epoch、训练和预测时间、物理场及性能参数损失文件
 
-​    |_📁 FNO                                                   # FNO训练结果保存
+​      |_📁 FNO                                                   # FNO训练结果保存
 
-​    |_📁 CNN                                                  # U-Net训练结果保存
+​      |_📁 CNN                                                  # U-Net训练结果保存
 
-​    |_📁 TNO                                                  # Transformer训练结果保存
+​      |_📁 TNO                                                  # Transformer训练结果保存
 
-​    |_📁 FNN                                                  # FNN训练结果保存
+​      |_📁 FNN                                                  # FNN训练结果保存
 
 |_📄 run_infer.py                                         # 测试过程
 
