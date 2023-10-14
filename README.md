@@ -141,7 +141,7 @@ basic_config:
 
 
 
-<img src="picture/tongdao.jpg" width="50%">
+<img src="picture/tongdao.jpg" width="60%">
 
 ### 1.1 数据描述
 
