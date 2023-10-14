@@ -141,7 +141,7 @@ basic_config:
 
 
 
-<img src="C:\Users\zt\Desktop\or2\通道.jpg" style="zoom:50%;" />
+<img src="picture/通道.png" width="20%">
 
 ### 1.1 数据描述
 
