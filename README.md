@@ -543,7 +543,7 @@ Reference: [3] Fourier Neural Operator for Parametric Partial Differential Equat
 
 Github: https://github.com/zongyi-li/fourier_neural_operator
 
-<img src="C:\Users\zt\Desktop\3.jpg" style="zoom:50%;" />
+<img src="picture/s_fno.jpg" width="60%">
 
 #### 4.1.2 代码说明
 
@@ -654,7 +654,7 @@ U-Net: 是一种卷积神经网络（CNN）方法，用于图像分割任务的�
 
 Reference: [4] U-Net: Convolutional Networks for Biomedical Image Segmentation
 
-<img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014094749732.png" style="zoom: 50%;" />
+<img src="picture/U-NET.png" width="40%">
 
 
 
@@ -792,7 +792,7 @@ FNN: Fully Neural Network
 
 Reference: [5] A physics-informed deep learning framework for inversion and surrogate modeling in solid mechanics
 
-<img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014093121334.png" style="zoom: 50%;" />
+<img src="picture/MLP.png" width="40%">
 
 #### 4.1.2 代码说明
 
@@ -893,7 +893,7 @@ DeepONet: deep operator network
 
 Reference: [6] Learning nonlinear operators via DeepONet based on the universal approximation theorem of operators
 
-<img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014093758871.png" style="zoom: 80%;" />
+<img src="picture/DeepONet.png" width="40%">
 
 #### 4.1.2 代码说明
 
@@ -1022,8 +1022,8 @@ github：https://github.com/scaomath/galerkin-transformer
 
 | 形式     | Attention计算方式                                            |                                                              |
 | -------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Fourier  | <img src="C:\Users\zt\Desktop\or2\a62efc6b06d3441492c507b1c381521fe474fcf9eed94ee6b53a7c36cd24184b.jpg" style="zoom: 50%;" /> | <img src="C:\Users\zt\Desktop\or2\2.jpg" style="zoom: 33%;" /> |
-| Galerkin | <img src="C:\Users\zt\Desktop\or2\3.jpg" style="zoom: 50%;" /> | <img src="C:\Users\zt\Desktop\or2\4.jpg" style="zoom: 33%;" /> |
+| Fourier  | <img src="picture/FARIER.png" width="90%"> | <img src="picture/F1.png" width="60%"> |
+| Galerkin | <img src="picture/GALER.jpg" width="90%"> | <img src="picture/G1.jpg" width="60%"> |
 
 #### 4.1.2 代码说明
 
@@ -1230,10 +1230,10 @@ TNO_model:
 
 | 损失函数                   | 公式                                                         |
 | -------------------------- | ------------------------------------------------------------ |
-| **物理场及性能参数总损失** | <img src="C:\Users\zt\Desktop\L2.png" style="zoom: 50%;" />  |
-| **物理场  ：平均相对误差** | <img src="C:\Users\zt\Desktop\MAX.png" style="zoom: 50%;" /> |
-| **物理场  ：最大相对误差** | <img src="C:\Users\zt\Desktop\MEA.png" style="zoom:50%;" />  |
-| **性能参数：相对误差**     | <img src="C:\Users\zt\Desktop\canshu.png" style="zoom:50%;" /> |
+| **物理场及性能参数总损失** | <img src="picture/L2.png" width="40%">  |
+| **物理场  ：平均相对误差** | <img src="picture/MEA.png" width="40%">  |
+| **物理场  ：最大相对误差** | <img src="picture/MAX.png" width="40%">  |
+| **性能参数：相对误差**     | <img src="picture/target.png" width="40%"> |
 
 
 
@@ -1245,55 +1245,55 @@ TNO_model:
 
 | 损失收敛曲线                 |                                                              |
 | ---------------------------- | ------------------------------------------------------------ |
-| **物理场总损失**             | ![](C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014084848857.png) |
-| **性能参数总损失**           | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014084933092.png" style="zoom:23%;" /> |
-| **四个物理场的平均相对误差** | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014085044410.png" style="zoom:23%;" /> |
-| **四个物理场的最大相对误差** | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014085134461.png" style="zoom:23%;" /> |
+| **物理场总损失**             | <img src="picture/FIELDS.png" width="30%">|
+| **性能参数总损失**           | <img src="picture/target_loss(1).png" width="30%"> |
+| **四个物理场的平均相对误差** | <img src="picture/FMEAD_LOSS.png" width="30%"> |
+| **四个物理场的最大相对误差** | <img src="picture/FMAXD_LOSS.png" width="30%"> |
 
 ​		为了更直观地比较不同模型在预测物理场中的偏差，我们选择60%的样本量，对五种神经算子网络模型预测物理场的最大相对误差和平均相对误差进行对比。
 
-| FMAXD     | <img src="C:\Users\zt\Desktop\image-20231014073800647.png"  /> |
+| **FMAXD** | <img src="picture/FMAXD.png" width="80%">|
 | --------- | ------------------------------------------------------------ |
-| **FMEAD** | ![](C:\Users\zt\Desktop\image-20231014073818625.png)         |
+| **FMEAD** | <img src="picture/FMEAD.png" width="80%">|
 
 ​		下图展示了五种神经算子网络预测的压力场p、温度场t、速度场u和v的真实场、预测场和误差分布。
 
 | 预测全局物理场  |                                                            |
 | --------------- | ---------------------------------------------------------- |
-| **FNO**         | <img src="C:\Users\zt\Desktop\1.jpg" style="zoom: 50%;" /> |
-| **U-Net**       | <img src="C:\Users\zt\Desktop\2.jpg" style="zoom:50%;" />  |
-| **FNN**         | <img src="C:\Users\zt\Desktop\4.jpg" style="zoom:50%;" />  |
-| **DeepONet**    | <img src="C:\Users\zt\Desktop\5.jpg" style="zoom:50%;" />  |
-| **Transformer** | <img src="C:\Users\zt\Desktop\7.jpg" style="zoom:50%;" />  |
+| **FNO**         | <img src="picture/FNO.png" width="60%"> |
+| **U-Net**       | <img src="picture/unet.jpg" width="60%">  |
+| **FNN**         | <img src="picture/FNN.png" width="60%">  |
+| **DeepONet**    | <img src="picture/DON.png" width="60%">  |
+| **Transformer** | <img src="picture/tno.jpg" width="60%">  |
 
 ​		此处，我们只放置预测效果最好的Tranformer和最差的DeepONet的物理场局部放大图。
 
 | 预测局部物理场  |                                                             |
 | --------------- | ----------------------------------------------------------- |
-| **Transformer** | <img src="C:\Users\zt\Desktop\11.jpg" style="zoom: 33%;" /> |
-| **DeepONet**    | <img src="C:\Users\zt\Desktop\22.jpg" style="zoom:33%;" />  |
+| **Transformer** | <img src="picture/tno_loc.jpg" width="60%"> |
+| **DeepONet**    | <img src="picture/DON_LOC.png" width="60%">  |
 
 ​			为了更直观地可视化微通道内每个物理变量的变化趋势，并对比不同神经算子网络模型在捕捉局部物理场细节的能力，我们选择了三个特定的位置进行分析，分析方法受文章[8]启发。这些位置分别位于靠近微通道的上壁、下壁和中间区域。曲线U位于距离上壁6.30 *μ*m处，曲线D位于距离下壁6.30 *μ*m处，曲线M位于微通道中心，距离上下壁面等距2.5 mm。注意：为了更清楚地反映三个不同通道位置的物理变量变化趋势及不同神经算子网络模型的局部预测效果，我们在此处只任选两种神经算子网络FNO和U-Net与真实值进行对比。其中蓝线为真实值，红圈、黑圈分别表示FNO和U-Net的预测值。值得注意的是，两种神经算子网络模型预测的物理变量与实际值基本一致，但在非矩形区域的凹槽和凸槽附近，U-Net很难捕捉到局部细微特征，因此预测误差较大。	
 
 | 微通道内部不同位置的物理量分析 | 曲线D                                                        | 曲线M                                                        | 曲线U                                                        |
 | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **压强p**                      | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014075733456.png" style="zoom: 20%;" /> | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014080010767.png" style="zoom:25%;" /> | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014080149573.png" style="zoom:20%;" /> |
-| **温度t**                      | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014080331865.png" style="zoom:30%;" /> | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014080452411.png" style="zoom:30%;" /> | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014080547025.png" style="zoom:25%;" /> |
-| **速度u**                      | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014080705280.png" style="zoom:25%;" /> | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014080809356.png" style="zoom:25%;" /> | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014080850810.png" style="zoom:25%;" /> |
-| **速度v**                      | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014080930512.png" style="zoom:25%;" /> | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014081017587.png" style="zoom:25%;" /> | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014081147769.png" style="zoom:25%;" /> |
+| **压强p**                      | <img src="picture/A.png" width="80%"> | <img src="picture/B.png" width="80%"> | <img src="picture/C.png" width="80%">|
+| **温度t**                      | <img src="picture/D.png" width="80%"> | <img src="picture/E.png" width="80%"> | <img src="picture/F.png"  width="80%">|
+| **速度u**                      | <img src="picture/G.png" width="80%"> | <img src="picture/H.png" width="80%">| <img src="picture/I.png" width="80%"> |
+| **速度v**                      | <img src="picture/J.png" width="80%"> | <img src="picture/K.png" width="80%"> | <img src="picture/L.png" width="80%"> |
 
 ​		在本文中，我们成功地预测了流体的物理场，并以空间积分的形式提取了有效表征流体传热性能的热物性参数*Nu*和*f*。如下图所示，*x*轴表示实际值，*y*轴表示预测值。散点越接近*y* *= x*线，预测结果越准确。值得注意的是，*Nu* 和 *f* 的预测误差分别在6%和5%以内，这证实了我们的方法可以较高地精度地实现对流动换热性能参数地预测。
 
 | 性能参数 |                                                              |
 | -------- | ------------------------------------------------------------ |
-| ***Nu*** | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014083121521.png" style="zoom:25%;" /> |
-| ***f***  | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014083147236.png" style="zoom:25%;" /> |
+| ***Nu*** |  <img src="picture/TARGER_NU.png" width="30%"> |
+| ***f***  | <img src="picture/TARGET_F.png" width="30%"> |
 
 ​		为了讨论不同样本数量对预测效果的影响，我们任选两种预测效果较好的神经算子网络FNO和效果较差的U-Net，分别选取总样本数量的60%、40%、20%、10%、5%和2.5%，对预测效果进行对比。综合FNO和U-Net在不同样本量下物理场的平均绝对预测误差，我们可以看出，FNO在较少样本量下实现了较高精度的物理场预测。例如只选取5%的样本即可达到小于0.1的物理场误差，选取40%的样本可以获得最佳的预测效果。而U-Net需要40%的样本才可达到小于0.1的误差，60%的样本达到最优的预测效果。因此，在训练样本数量的角度来看，FNO的计算所需资源远小于U-Net。
 
 | 训练集大小对物理场平均相对误差的影响 | FNO                                                          | U-Net                                                        |
 | ------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **FMAEAD**                           | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014083623926.png" style="zoom:25%;" /> | <img src="C:\Users\zt\AppData\Roaming\Typora\typora-user-images\image-20231014083721214.png" style="zoom:25%;" /> |
+| **FMAEAD**                           | <img src="picture/FNO_FMEAD.png" width="100%"> | <img src="picture/FMEAD_UNET.png" width="100%"> |
 
 ​		最后，我们在计算成本方面对五种神经算子网络模型进行了更详细的比较。如下表所示，FNO占用显存最少，DeepONet占用显存最多，且分别需要占用1.21 GB和 6.43 GB的显存，后者的需求大约是前者的5倍。在训练时间方面，DeepONet 训练时间最长，相比时间最短的FNO增加了3 倍。此外，Transformer和U-Net的总参数量最多，大量数据需求是由于其大量的内存成本，较长的训练时间，以及需要大量的训练样本来实现对物理场的精确识别。但综合物理场及损失等对比，Transformer和FNO在预测精度和训练成本上最优，U-Net和DeepONet的预测精度和训练成本最差。且预测效果最优的Transformer比预测效果最差的DeepONet的预测精度提高了1个数量级。
 
