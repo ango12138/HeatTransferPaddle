@@ -13,9 +13,9 @@ from process_data import HeatDataset, HeatDataLoader
 from neural_model import BasicModule
 
 # 读入原始配置文件
-with open(os.path.join('default_config.yml')) as f:
+name = 'TNO'
+with open(os.path.join('config', name + '.yaml'), encoding='utf-8') as f:
     config = yaml.full_load(f)
-
 basic_config = config['basic_config']
 
 # 数据配置
@@ -26,7 +26,6 @@ data_name = basic_config['data_name']
 data_file = os.path.join('./data', data_name)
 
 # 网络参数配置
-name = 'TNO'
 load_path = os.path.join('work', name, '2023-10-02-00-52')
 Module = BasicModule(name=name, config=None, network_config=None, load_path=load_path)
 
