@@ -15,7 +15,7 @@
 
 📂 Deep-Flow-Prediction-Paddle
 
-|_📁 data                                                              &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;&emsp;  &emsp; &emsp; &emsp;&emsp; &emsp; &emsp; &emsp;#部分数据集
+|_📁 data                                                              &emsp; &emsp; &emsp;&emsp;  &emsp; &emsp; &emsp;&emsp; &emsp; &emsp; &emsp;#部分数据集
 
 ​      &emsp;|_ 📄 dim_pro8_single_try.mat
 
@@ -1253,7 +1253,7 @@ TNO_model:
 
 | **FMAXD** | <img src="picture/FMAXD.png" width="80%">|
 | --------- | ------------------------------------------------------------ |
-| **FMEAD** | <img src="picture/FMEAD.png" width="80%">|
+| **FMEAD** | &emsp; &emsp;&emsp; <img src="picture/FMEAD.png" width="80%">|
 
 ​		 &emsp; &emsp;下图展示了五种神经算子网络预测的压力场p、温度场t、速度场u和v的真实场、预测场和误差分布。
 
