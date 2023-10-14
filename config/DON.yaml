@@ -1,7 +1,7 @@
 basic_config:
   root_path: './'
   data_name: 'dim_pro8_single_all.mat'
-  training_size: 0.5905
+  training_size: 0.6
   batch_size: 32
   total_epoch: 800
   loss_name: 'mse'
