@@ -1,4 +1,4 @@
-# 基于深度学习的纳米流体物理场与性能预测研究-----技术文档
+# 基于深度学习的纳米流体物理场与性能预测研究
 
 
 
@@ -137,9 +137,10 @@ basic_config:
 
 ​         &emsp; &emsp;本研究中，我们采用商业软件ICEM CFD和FLUENT对网格进行划分以及数值计算，基于有限体积法，对控制方程进行时均化处理，所有方程均采用SIMPLE 算法结合二阶迎风离散化方案求解。当所有控制方程的残差小于 10-6，且相邻迭代之间平均壁温和压降的残差小于 0.1%时，认为数值模型收敛。
 
- 		本文，以Al2O3 纳米流体在带有凹槽的微通道中流动的二维流动换热问题作为研究对象，验证物理场预测以及流动换热性能的识别方法。 鉴于其几何形状，可以在沿 z 方向的任何位置获得 x-y 平面模型，因此我们将三维模型简化为二维模型，且示意图如下所示。
-
-<img src="picture/tongdao.jpg" width="60%">
+ &emsp; &emsp; 本文，以Al2O3 纳米流体在带有凹槽的微通道中流动的二维流动换热问题作为研究对象，验证物理场预测以及流动换热性能的识别方法。 鉴于其几何形状，可以在沿 z 方向的任何位置获得 x-y 平面模型，因此我们将三维模型简化为二维模型，且示意图如下所示。
+ 
+ 
+ &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;<img src="picture/tongdao.jpg" width="60%">
 
 ### 1.1 数据描述
 
@@ -541,7 +542,7 @@ Reference: [3] Fourier Neural Operator for Parametric Partial Differential Equat
 
 Github: https://github.com/zongyi-li/fourier_neural_operator
 
-<img src="picture/s_fno.jpg" width="60%">
+ &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;&emsp;  <img src="picture/s_fno.jpg" width="60%">
 
 #### 4.1.2 代码说明
 
@@ -652,7 +653,7 @@ U-Net: 是一种卷积神经网络（CNN）方法，用于图像分割任务的�
 
 Reference: [4] U-Net: Convolutional Networks for Biomedical Image Segmentation
 
-<img src="picture/U-NET.png" width="40%">
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;&emsp; <img src="picture/U-NET.png" width="40%">
 
 
 
@@ -790,7 +791,7 @@ FNN: Fully Neural Network
 
 Reference: [5] A physics-informed deep learning framework for inversion and surrogate modeling in solid mechanics
 
-<img src="picture/MLP.png" width="40%">
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;&emsp; <img src="picture/MLP.png" width="40%">
 
 #### 4.1.2 代码说明
 
@@ -891,7 +892,7 @@ DeepONet: deep operator network
 
 Reference: [6] Learning nonlinear operators via DeepONet based on the universal approximation theorem of operators
 
-<img src="picture/DeepONet.png" width="40%">
+&emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;&emsp; <img src="picture/DeepONet.png" width="40%">
 
 #### 4.1.2 代码说明
 
