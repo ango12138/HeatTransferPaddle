@@ -1246,7 +1246,7 @@ TNO_model:
 | 损失收敛曲线                 |                                                              |
 | ---------------------------- | ------------------------------------------------------------ |
 | **物理场总损失**             | <img src="picture/FIELDS.png" width="30%">|
-| **性能参数总损失**           | <img src="picture/target_loss(1).png" width="30%"> |
+| **性能参数总损失**           | <img src="picture/target_loss.png" width="30%"> |
 | **四个物理场的平均相对误差** | <img src="picture/FMEAD_LOSS.png" width="30%"> |
 | **四个物理场的最大相对误差** | <img src="picture/FMAXD_LOSS.png" width="30%"> |
 
