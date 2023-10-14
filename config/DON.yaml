@@ -1,0 +1,37 @@
+basic_config:
+  root_path: './'
+  data_name: 'dim_pro8_single_all.mat'
+  training_size: 0.5905
+  batch_size: 32
+  total_epoch: 800
+  loss_name: 'mse'
+  learning_rate: 1.e-2
+  weight_decay: 0.
+  learning_beta:
+    - 0.7
+    - 0.9
+  learning_milestones:
+    - 600
+    - 700
+    - 800
+  learning_gamma: 0.1
+
+
+DON_model:
+  in_dim: 2                # note: deeponet in_dim 为空间坐标
+  out_dim: 4
+  operator_dims:           # note: deeponet operator_dims 为设计变量
+    - 10
+  planes_branch:
+    - 64
+    - 64
+    - 64
+    - 64
+    - 64
+  planes_trunk:
+    - 64
+    - 64
+    - 64
+    - 64
+  activation: 'gelu'
+

@@ -1,0 +1,26 @@
+basic_config:
+  root_path: './'
+  data_name: 'dim_pro8_single_all.mat'
+  training_size: 0.8
+  batch_size: 32
+  total_epoch: 500
+  loss_name: 'mse'
+  learning_rate: 1.e-4
+  weight_decay: 1.e-12
+  learning_beta:
+    - 0.7
+    - 0.9
+  learning_milestones:
+    - 300
+    - 400
+    - 500
+  learning_gamma: 0.1
+
+CNN_model:
+  in_sizes: [396, 40, 10]
+  out_sizes: [396, 40, 4]
+  width: 32
+  depth: 6
+  steps: 1    # Number of steps to unroll, should be 1 in this problem
+  activation: 'gelu'
+  dropout: 0.0
