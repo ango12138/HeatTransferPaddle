@@ -15,69 +15,69 @@
 
 📂 Deep-Flow-Prediction-Paddle
 
-|_📁 data                                                             #部分数据集
+|_📁 data                                                               &emsp; &emsp; &emsp;&emsp; &emsp; &emsp; &emsp;#部分数据集
 
-​     |_ 📄 dim_pro8_single_try.mat
+​      &emsp;|_ 📄 dim_pro8_single_try.mat
 
 |_📁 config
 
-​     |_📄 CNN.yaml                                             # CNN的网络参数设置
+​      &emsp;|_📄 CNN.yaml                                            &emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; # CNN的网络参数设置
 
-​     |_📄 DNO.yaml                                            # DNO的网络参数设置
+​      &emsp;|_📄 DNO.yaml                                           &emsp; &emsp; &emsp;   &emsp; &emsp; &emsp; &emsp; # DNO的网络参数设置
 
-​     |_📄 FNO.yaml                                             # FNO的网络参数设置
+​      &emsp;|_📄 FNO.yaml                                             &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; # FNO的网络参数设置
 
-​     |_📄 MLP.yaml                                             # FNN的网络参数设置
+​      &emsp;|_📄 MLP.yaml                                              &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;# FNN的网络参数设置
 
-​     |_📄 TNO.yaml                                            # TNO的网络参数设置
+​      &emsp;|_📄 TNO.yaml                                            &emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp;# TNO的网络参数设置
 
 |_📁 src
 
-​    |_📄 process_data                                       # 读取matlab格式数据；数据归一化；划分数据集及数据采样
+​     &emsp;|_📄 process_data                                  &emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp;# 读取matlab格式数据；数据归一化；划分数据集及数据采样
 
-​    |_📄 CNN_model.py                                   # 二维U-Net model paddle代码
+​     &emsp;|_📄 CNN_model.py                                  &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;   &emsp; &emsp; &emsp; &emsp;# 二维U-Net model paddle代码
 
-​    |_📄 DON_model.py                                  # 二维DeepONet 以及 FNN model paddle代码
+​     &emsp;|_📄 DON_model.py                          &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;# 二维DeepONet 以及 FNN model paddle代码
 
-​    |_📄 FNO_model.py                                   # 二维Fourier Neural Operator paddle代码
+​     &emsp;|_📄 FNO_model.py                      &emsp; &emsp; &emsp;   &emsp; &emsp; &emsp; &emsp;# 二维Fourier Neural Operator paddle代码
 
-​    |_📄 TNO_model.py                                   # 二维Transformer paddle代码, 支持多种attention机制以及两种Regressor
+​     &emsp;|_📄 TNO_model.py                     &emsp; &emsp; &emsp;&emsp; &emsp; &emsp; &emsp;# 二维Transformer paddle代码, 支持多种attention机制以及两种Regressor
 
-​    |_📄 neural_model.py                               # 网络的训练及验证；性能参数的积分求解；可视化损失函数、物理场、性能参数
+​     &emsp;|_📄 neural_model.py                &emsp; &emsp; &emsp;&emsp; &emsp; &emsp; &emsp;# 网络的训练及验证；性能参数的积分求解；可视化损失函数、物理场、性能参数
 
-​    |_📄 process_data.py                                # 数据读取；数据归一化；数据集划分；
+​     &emsp;|_📄 process_data.py                                &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; # 数据读取；数据归一化；数据集划分；
 
-​    |_📄 utilize.py                                             # 激活函数；损失函数；初始化权重；记录训练信息
+​     &emsp;|_📄 utilize.py                                           &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; # 激活函数；损失函数；初始化权重；记录训练信息
 
-​    |_📄 visual_data.py                                    # 可视化代码
+​     &emsp;|_📄 visual_data.py                                     &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;# 可视化代码
 
-|_📁 work                                                       # 训练过程、验证结果、测试结果，统计结果文件保存
+|_📁 work                                                        &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;# 训练过程、验证结果、测试结果，统计结果文件保存
 
-​    |_📁 DON                                                   # DeepONet训练结果保存
+​     &emsp;|_📁 DON                                                   &emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp;# DeepONet训练结果保存
 
-​         |_📁 2023-10-07-10-43                       # 以时间戳命名对结果保存
+​           &emsp;&emsp;|_📁 2023-10-07-10-43                       &emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp;# 以时间戳命名对结果保存
 
-​                |_📁 infer                                       # 模型训练、验证、测试结果保存
+​                 &emsp; &emsp;&emsp;|_📁 infer                                    &emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp; # 模型训练、验证、测试结果保存
 
-​                |_📁 train                                      # 训练结果保存
+​                 &emsp; &emsp; &emsp;|_📁 train                                        &emsp; &emsp; &emsp;&emsp; &emsp; &emsp; &emsp;# 训练结果保存
 
-​                |_📁 valid                                      # 验证结果保存
+​                 &emsp; &emsp; &emsp;|_📁 valid                                       &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;# 验证结果保存
 
-​                |_📄 last_model.pdparams        # 保存的模型文件
+​                 &emsp; &emsp; &emsp;|_📄 last_model.pdparams         &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;# 保存的模型文件
 
-​                |_📄 loghistory.pkl                       # 保存的epoch、训练和预测时间、物理场及性能参数损失文件
+​                 &emsp; &emsp; &emsp;|_📄 loghistory.pkl              &emsp; &emsp; &emsp;  &emsp; &emsp; &emsp; &emsp;# 保存的epoch、训练和预测时间、物理场及性能参数损失文件
 
-​    |_📁 FNO                                                   # FNO训练结果保存
+​     &emsp;|_📁 FNO                                                   &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; # FNO训练结果保存
 
-​    |_📁 CNN                                                  # U-Net训练结果保存
+​     &emsp;|_📁 CNN                                                   &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;# U-Net训练结果保存
 
-​    |_📁 TNO                                                  # Transformer训练结果保存
+​     &emsp;|_📁 TNO                                                   &emsp; &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;# Transformer训练结果保存
 
-​    |_📁 FNN                                                  # FNN训练结果保存
+​     &emsp;|_📁 FNN                                                   &emsp; &emsp; &emsp; &emsp; &emsp; &emsp;# FNN训练结果保存
 
-|_📄 run_infer.py                                         # 测试过程
+|_📄 run_infer.py                                           &emsp; &emsp; &emsp;&emsp; &emsp; &emsp; &emsp;# 测试过程
 
-|_📄 run_main.py                                       # 训练过程、验证过程
+|_📄 run_main.py                                         &emsp; &emsp; &emsp;&emsp; &emsp; &emsp; &emsp;# 训练过程、验证过程
 
 
 
@@ -135,24 +135,22 @@ basic_config:
 
 ## 2. 原始数据集
 
-​        本研究中，我们采用商业软件ICEM CFD和FLUENT对网格进行划分以及数值计算，基于有限体积法，对控制方程进行时均化处理，所有方程均采用SIMPLE 算法结合二阶迎风离散化方案求解。当所有控制方程的残差小于 10-6，且相邻迭代之间平均壁温和压降的残差小于 0.1%时，认为数值模型收敛。
+​         &emsp; &emsp;本研究中，我们采用商业软件ICEM CFD和FLUENT对网格进行划分以及数值计算，基于有限体积法，对控制方程进行时均化处理，所有方程均采用SIMPLE 算法结合二阶迎风离散化方案求解。当所有控制方程的残差小于 10-6，且相邻迭代之间平均壁温和压降的残差小于 0.1%时，认为数值模型收敛。
 
  		本文，以Al2O3 纳米流体在带有凹槽的微通道中流动的二维流动换热问题作为研究对象，验证物理场预测以及流动换热性能的识别方法。 鉴于其几何形状，可以在沿 z 方向的任何位置获得 x-y 平面模型，因此我们将三维模型简化为二维模型，且示意图如下所示。
-
-
 
 <img src="picture/tongdao.jpg" width="60%">
 
 ### 1.1 数据描述
 
-​		本文所有的状态参数均可以从数值分析结果 [1-2] 中获取，物理场数据是定义在结构化网格的每个节点上。我们采用Latin超立方采样方法采集了6773个样本，并划分为训练集（80%，5418个样本）和验证集（10%，677个样本作为验证集对模型进行调优）、测试集（10%，677 个样本）。之所以选择如此多的样本，是因为在开始仿真时，我们难以断定恢复全部流场需要多少的数据量。
+​		 &emsp; &emsp;本文所有的状态参数均可以从数值分析结果 [1-2] 中获取，物理场数据是定义在结构化网格的每个节点上。我们采用Latin超立方采样方法采集了6773个样本，并划分为训练集（80%，5418个样本）和验证集（10%，677个样本作为验证集对模型进行调优）、测试集（10%，677 个样本）。之所以选择如此多的样本，是因为在开始仿真时，我们难以断定恢复全部流场需要多少的数据量。
 
 |           | 数据格式                                                     | 数据组成                                                     |
 | --------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | **输入** | 设计变量：变量尺寸 10<br/>空间坐标：通道数 2，空间尺寸                792×40 | 设计变量：包括五个可变几何变量、一个表征纳米流体的工质特性的参数、两个表征边界条件的工况参数；此外，还包括两个常数，分别为入口温度 *T*= 293K 和出口压强*P* =100KPa 。<br/>空间坐标：包含三个方向，即x, y和z。注意，本文只取x和y两个方向。 |
 | **输出**  | 物理场：通道数4 ，空间尺寸792×40     <br/>性能参数：空间尺寸 2 | 4个物理场：压强场p，温度场t，x方向的速度场u，y方向的速度场v。<br/>2个性能参数：Nusselt数和Fanning摩擦因子 |
 
-​		微通道的*x*, *y*方向的尺寸分别为[0, 05] *μ*m和 [0, *a*] *μ*m，*a* = [130, 270] *μ*m。8个设计变量的取值如下所示。
+​		 &emsp; &emsp;微通道的*x*, *y*方向的尺寸分别为[0, 05] *μ*m和 [0, *a*] *μ*m，*a* = [130, 270] *μ*m。8个设计变量的取值如下所示。
 
 | 设计变量 | *R*e | *φ*/% | *l*3/μm | *R*1/*μ*m | *R*2/*μ*m | *δ*1 | *δ*2 | *q*/W·m2 |
 | :------: | :--: | :---: | :-----: | :-------: | :-------: | :--: | :--: | :------: |
@@ -163,7 +161,7 @@ basic_config:
 
 ### 1.2 数据采样
 
-​		建立HeatDataset类，继承于 'Dataset' 类，以便进行数据加载、预处理等。在初始化方法中，mode可取0，1，2，分别代表训练、验证和测试。'sample_size' , 'training_size' 和 'test_size' 分别表示选取样本数量，训练集占样本数量的比例和测试集占样本数量的比例。
+​		 &emsp; &emsp;建立HeatDataset类，继承于 'Dataset' 类，以便进行数据加载、预处理等。在初始化方法中，mode可取0，1，2，分别代表训练、验证和测试。'sample_size' , 'training_size' 和 'test_size' 分别表示选取样本数量，训练集占样本数量的比例和测试集占样本数量的比例。
 
 ```python
 class HeatDataset(Dataset):
@@ -176,7 +174,7 @@ class HeatDataset(Dataset):
 
 ### 1.3 数据读取
 
-​		函数data_read实现了数据读取的功能，通过MatLoader加载我们的mat数据文件。首先，取mat文件内的 'data' 的第一维（即batchsize）定义为length。将读取到的 'data' 字段的数据按照 self.shuffle_idx 的顺序进行重新排列，然后将结果赋给了 self.data.design。 ' grids' 和 ' field'分别为空间坐标和温度场，在读取数据时，我们均在x方向将分辨率降低为原始数据的1倍，且 坐标只取前两个方向x和y。'target' 指性能参数，是 Nu 和 f 在最后一个维度上拼接起来的。
+​		 &emsp; &emsp;函数data_read实现了数据读取的功能，通过MatLoader加载我们的mat数据文件。首先，取mat文件内的 'data' 的第一维（即batchsize）定义为length。将读取到的 'data' 字段的数据按照 self.shuffle_idx 的顺序进行重新排列，然后将结果赋给了 self.data.design。 ' grids' 和 ' field'分别为空间坐标和温度场，在读取数据时，我们均在x方向将分辨率降低为原始数据的1倍，且 坐标只取前两个方向x和y。'target' 指性能参数，是 Nu 和 f 在最后一个维度上拼接起来的。
 
 ```python
     def data_read(self):
@@ -203,9 +201,9 @@ class HeatDataset(Dataset):
 
 ### 1.4 数据集划分
 
-​		函数data_split实现了数据集划分的功能。训练集大小= 样本大小*训练集比例，验证集大小=max(样本大小 -（1-训练集大小 - 测试集大小）, 200)， 测试集大小=验样本大小-训练集大小-验证集大小。
+​		 &emsp; &emsp;函数data_split实现了数据集划分的功能。训练集大小= 样本大小*训练集比例，验证集大小=max(样本大小 -（1-训练集大小 - 测试集大小）, 200)， 测试集大小=验样本大小-训练集大小-验证集大小。
 
-​		当mode=0时，训练集中设计变量，坐标，物理场，性能参数均取从0到列表的第self.train_len个数据；当mode=1时，验证集中设计变量，坐标，物理场，性能参数均取从训练集d的第self.train_len个数据到训练集加验证集大小个数据；当mode=2时，测试集中设计变量，坐标，物理场，性能参数均取从从列表的倒数第 self.test_len 个元素开始，一直到列表的最后一个元素。
+​		 &emsp; &emsp;当mode=0时，训练集中设计变量，坐标，物理场，性能参数均取从0到列表的第self.train_len个数据；当mode=1时，验证集中设计变量，坐标，物理场，性能参数均取从训练集d的第self.train_len个数据到训练集加验证集大小个数据；当mode=2时，测试集中设计变量，坐标，物理场，性能参数均取从从列表的倒数第 self.test_len 个元素开始，一直到列表的最后一个元素。
 
 ```python
     def data_split(self):
@@ -237,7 +235,7 @@ class HeatDataset(Dataset):
 
 ### 1.5 数据加载
 
-​		建立 'HeatDataLoader' 类，继承自  DataLoader 类，用于批量加载数据集。在初始化方法中，'batchsize' 为每个批次放入样本数，'shuffle' 为是否在每个训练时打乱样本的顺序，'drop_last' 为是否丢弃最后一个不满足一个样本数量的批次。
+​		 &emsp; &emsp;建立 'HeatDataLoader' 类，继承自  DataLoader 类，用于批量加载数据集。在初始化方法中，'batchsize' 为每个批次放入样本数，'shuffle' 为是否在每个训练时打乱样本的顺序，'drop_last' 为是否丢弃最后一个不满足一个样本数量的批次。
 
 ```python
 class HeatDataLoader(DataLoader):
@@ -249,7 +247,7 @@ class HeatDataLoader(DataLoader):
 
 ### 1.6 数据归一化
 
-​		为了消除设计变量、空间坐标、物理场和性能参数之间的量纲差距，我们对数据进行了归一化操作。在代码中，提供了两种归一化方法，分别为 'min-max' 归一化和 'mean-std' 归一化。在本研究中，由于物理场的最大值和最小值具有明显的物理意义，因此我们采用 'min-max' 归一化方式。
+​		 &emsp; &emsp;为了消除设计变量、空间坐标、物理场和性能参数之间的量纲差距，我们对数据进行了归一化操作。在代码中，提供了两种归一化方法，分别为 'min-max' 归一化和 'mean-std' 归一化。在本研究中，由于物理场的最大值和最小值具有明显的物理意义，因此我们采用 'min-max' 归一化方式。
 
 ```python
 class DataNormer(object):
@@ -338,7 +336,7 @@ class DataNormer(object):
 
 ### 3.1 训练过程
 
-​		定义train_epoch函数，旨在对网络进行训练。网络的输入为设计变量和空间坐标，物理场损失选择loss_func，即yaml文件 'basic_config' 的loss_name对应的损失类型。本研究中，我们选择MSE损失作为物理场总损失。
+​		 &emsp; &emsp;定义train_epoch函数，旨在对网络进行训练。网络的输入为设计变量和空间坐标，物理场损失选择loss_func，即yaml文件 'basic_config' 的loss_name对应的损失类型。本研究中，我们选择MSE损失作为物理场总损失。
 
 ```python
      def train_epoch(self, train_loader):
@@ -355,7 +353,7 @@ class DataNormer(object):
 
 ### 3.2 网络验证
 
-​		定义valid_epoch函数，旨在对网络进行验证。除了对物理场的求解，我们还添加了对性能参数的求解，即输入物理场、空间坐标和设计变量。物理场总损失和性能参数总损失均采用MSE损失，而fields_metric和target_metric分别表示四个物理场和两个性能参数的各自损失，具体计算方式由PhysicsLpLoss类通过求解相对范数来完成计算。其中，fields_metric采用二阶范数，target_metric采用一阶范数，同时考虑到性能参数f有接近于0的情况，因此使用relative=False。
+​		 &emsp; &emsp;定义valid_epoch函数，旨在对网络进行验证。除了对物理场的求解，我们还添加了对性能参数的求解，即输入物理场、空间坐标和设计变量。物理场总损失和性能参数总损失均采用MSE损失，而fields_metric和target_metric分别表示四个物理场和两个性能参数的各自损失，具体计算方式由PhysicsLpLoss类通过求解相对范数来完成计算。其中，fields_metric采用二阶范数，target_metric采用一阶范数，同时考虑到性能参数f有接近于0的情况，因此使用relative=False。
 
 ```python
     def valid_epoch(self, data_loader):
@@ -401,7 +399,7 @@ class DataNormer(object):
 
 ### 	3.3 网络推理测试
 
-​		定义infer函数，旨在使用数据加载器 data_loader来获取对应的训练、验证或测试数据，同时使用 data_name 来生成对应文件。此部分，我们将所有训练数据、验证数据和测试数据分别进行求解，得到各自的物理场、性能参数的真实值、预测值以及测试值。同时，可视化二维物理场云图和性能参数回归图。
+​		 &emsp; &emsp;定义infer函数，旨在使用数据加载器 data_loader来获取对应的训练、验证或测试数据，同时使用 data_name 来生成对应文件。此部分，我们将所有训练数据、验证数据和测试数据分别进行求解，得到各自的物理场、性能参数的真实值、预测值以及测试值。同时，可视化二维物理场云图和性能参数回归图。
 
 ```python
  def infer(self, data_loader, data_name, show_nums=20):
@@ -411,7 +409,7 @@ class DataNormer(object):
 
 ### 	3.4 训练过程
 
-​		定义train函数，旨在利用 train_loader 和 valid_loader 来获取训练数据和验证数据，将epoch、训练时间、验证时间、物理场总损失、性能参数总损失、4个物理场和2个性能参数各自的损失全部保存在loghistory.pkl 文件内，并把模型和训练的参数，例如epoch、数据配置、优化器、学习率、网络参数等信息全部保存在last_model.pdparams文件中。同时，对损失函数进行可视化。
+​		 &emsp; &emsp;定义train函数，旨在利用 train_loader 和 valid_loader 来获取训练数据和验证数据，将epoch、训练时间、验证时间、物理场总损失、性能参数总损失、4个物理场和2个性能参数各自的损失全部保存在loghistory.pkl 文件内，并把模型和训练的参数，例如epoch、数据配置、优化器、学习率、网络参数等信息全部保存在last_model.pdparams文件中。同时，对损失函数进行可视化。
 
 ```python
   def train(self, train_loader, valid_loader):
@@ -421,7 +419,7 @@ class DataNormer(object):
 
 ### 3.5 性能参数积分求解
 
-​		定义 Characteristic 类，旨在利用神经算子网络预测的物理场，通过积分求解的方式，实现对性能参数 Nu 和 f 的预测。函数get_parameters_of_nano 实现了对纳米流体的物理性质（热导率、比热、密度、动力粘度）进行求解；函数 cal_f 、cal_tb 、cal_tw 实现了对控制方程中偏导数的求解。
+​		 &emsp; &emsp;定义 Characteristic 类，旨在利用神经算子网络预测的物理场，通过积分求解的方式，实现对性能参数 Nu 和 f 的预测。函数get_parameters_of_nano 实现了对纳米流体的物理性质（热导率、比热、密度、动力粘度）进行求解；函数 cal_f 、cal_tb 、cal_tw 实现了对控制方程中偏导数的求解。
 
 ```python
 class Characteristic(nn.Layer):
@@ -547,7 +545,7 @@ Github: https://github.com/zongyi-li/fourier_neural_operator
 
 #### 4.1.2 代码说明
 
-​		此神经算子网络的网络结构，如上图所示，主要由全连接层和傅里叶层组成。首先，采用设计变量和空间坐标作为输入，通过全连接层将输入通道从4提升到高维通道32。其次，通过4个傅里叶层（每层包括两个不同的操作，即顶部操作和底部操作），得到傅里叶层的输出。再通过两个全连接层，实现空间维度从398×42到396×40的变化，且通道数从42 先增加到128，并最终再降维回到目标维度4。
+​		 &emsp; &emsp;此神经算子网络的网络结构，如上图所示，主要由全连接层和傅里叶层组成。首先，采用设计变量和空间坐标作为输入，通过全连接层将输入通道从4提升到高维通道32。其次，通过4个傅里叶层（每层包括两个不同的操作，即顶部操作和底部操作），得到傅里叶层的输出。再通过两个全连接层，实现空间维度从398×42到396×40的变化，且通道数从42 先增加到128，并最终再降维回到目标维度4。
 
 ```python
 class FNO2d(nn.Layer):
@@ -617,7 +615,7 @@ class FNO2d(nn.Layer):
 
 #### 4.1.3 参数配置
 
-​		下面我们列出了FNO的具体训练参数和网络参数设置。其中，为了更清晰地展示参数配置，我们在'basic_config' 中列出的训练参数，均为针对每个特定模型训练时设置的，除此外剩余的基本训练参数设置，见 1.1 中的 'basic_config' 。
+​		 &emsp; &emsp;下面我们列出了FNO的具体训练参数和网络参数设置。其中，为了更清晰地展示参数配置，我们在'basic_config' 中列出的训练参数，均为针对每个特定模型训练时设置的，除此外剩余的基本训练参数设置，见 1.1 中的 'basic_config' 。
 
 ```python
 basic_config:
@@ -660,7 +658,7 @@ Reference: [4] U-Net: Convolutional Networks for Biomedical Image Segmentation
 
 #### 4.1.2 代码说明
 
-​		在本网络架构中，我们设置网络宽度为32，深度为6，采用GELU激活函数。*E*n主要由一个2×2的最大池化层和2个3×3的卷积层组成。首先将输入图像进行上采样，通过插值改变张量尺寸，将空间尺寸从396×40减小为256×40，再经过2个3×3的卷积层。其次，我们进行2×2的下采样，再进行2个3×3的卷积层，保证空间尺寸不变化，如此循环5次后，通道数从最初的32变为了1024，图像空间尺寸从396×40变为8×2。同理，*B*o结构与*E*n相似，但只进行一次最大池化和两次卷积，此时，通道数变为2048，空间尺寸变为4×1。*D*e主要由一个2×2的转置卷积，一个特征融合，两个3×3的卷积层组成。如此6次循环后，通道数从1024变回为32，空间尺寸从8×2变回为256×64。最后，我们经过一个上采样，将空间尺寸调整为396×40，通道数减少为4，最后再经过一个3×3的卷积层后，输出我们想要的4个物理场。
+​		 &emsp; &emsp;在本网络架构中，我们设置网络宽度为32，深度为6，采用GELU激活函数。*E*n主要由一个2×2的最大池化层和2个3×3的卷积层组成。首先将输入图像进行上采样，通过插值改变张量尺寸，将空间尺寸从396×40减小为256×40，再经过2个3×3的卷积层。其次，我们进行2×2的下采样，再进行2个3×3的卷积层，保证空间尺寸不变化，如此循环5次后，通道数从最初的32变为了1024，图像空间尺寸从396×40变为8×2。同理，*B*o结构与*E*n相似，但只进行一次最大池化和两次卷积，此时，通道数变为2048，空间尺寸变为4×1。*D*e主要由一个2×2的转置卷积，一个特征融合，两个3×3的卷积层组成。如此6次循环后，通道数从1024变回为32，空间尺寸从8×2变回为256×64。最后，我们经过一个上采样，将空间尺寸调整为396×40，通道数减少为4，最后再经过一个3×3的卷积层后，输出我们想要的4个物理场。
 
 ```python
 class UNet2d(nn.Layer):
@@ -756,7 +754,7 @@ class UNet2d(nn.Layer):
 
 #### 4.1.3 参数配置
 
-​	下面我们列出了U-Net的具体训练参数和网络参数设置。其中，为了更清晰地展示参数配置，我们在'basic_config' 中列出的训练参数，均为针对每个特定模型训练时设置的，除此外剩余的基本训练参数设置，见 1.1 中的 'basic_config' 。
+​	 &emsp; &emsp;下面我们列出了U-Net的具体训练参数和网络参数设置。其中，为了更清晰地展示参数配置，我们在'basic_config' 中列出的训练参数，均为针对每个特定模型训练时设置的，除此外剩余的基本训练参数设置，见 1.1 中的 'basic_config' 。
 
 ```python
 basic_config:
@@ -796,7 +794,7 @@ Reference: [5] A physics-informed deep learning framework for inversion and surr
 
 #### 4.1.2 代码说明
 
-​		在本研究中，我们采用多个全连接层，每个全连接层来预测一个物理场。输入维度为设计变量+空间坐标=10，网络宽度为64，深度为5，输出维度是4，即压强场、温度场、速度场*u*和*v*。 
+​		 &emsp; &emsp;在本研究中，我们采用多个全连接层，每个全连接层来预测一个物理场。输入维度为设计变量+空间坐标=10，网络宽度为64，深度为5，输出维度是4，即压强场、温度场、速度场*u*和*v*。 
 
 ```python
 class FcnMulti(nn.Layer):
@@ -852,7 +850,7 @@ class FcnMulti(nn.Layer):
 
 #### 4.1.3 参数配置
 
-​	下面我们列出了FNN的具体训练参数和网络参数设置。其中，为了更清晰地展示参数配置，我们在'basic_config' 中列出的训练参数，均为针对每个特定模型训练时设置的。除此外剩余的基本训练参数设置，见 1.1 中的 'basic_config' 。
+​	 &emsp; &emsp;下面我们列出了FNN的具体训练参数和网络参数设置。其中，为了更清晰地展示参数配置，我们在'basic_config' 中列出的训练参数，均为针对每个特定模型训练时设置的。除此外剩余的基本训练参数设置，见 1.1 中的 'basic_config' 。
 
 ```python
 basic_config:
@@ -897,7 +895,7 @@ Reference: [6] Learning nonlinear operators via DeepONet based on the universal 
 
 #### 4.1.2 代码说明
 
-​		DeepONet是深度神经算子网络，由主干网络Trunk net和分支网络Branch net组成，通过最小化目标算子与给定的神经网络之间的误差来实现对复杂特征的准确预测。其中，该网络支持搭建多个Branch net，例如边界条件是分布式的输入。在对在对该网络进行训练时，我们Branch net的输入维度为包含10个设计变量的列表，Trunk net的输入维度为包含2个空间坐标的张量，分别设置二者的隐藏层数为[64, 64, 64, 64, 64]和 [64, 64, 64, 64]。
+​		 &emsp; &emsp;DeepONet是深度神经算子网络，由主干网络Trunk net和分支网络Branch net组成，通过最小化目标算子与给定的神经网络之间的误差来实现对复杂特征的准确预测。其中，该网络支持搭建多个Branch net，例如边界条件是分布式的输入。在对在对该网络进行训练时，我们Branch net的输入维度为包含10个设计变量的列表，Trunk net的输入维度为包含2个空间坐标的张量，分别设置二者的隐藏层数为[64, 64, 64, 64, 64]和 [64, 64, 64, 64]。
 
 ```python
 class DeepONetMulti(nn.Layer):
@@ -974,7 +972,7 @@ class DeepONetMulti(nn.Layer):
 
 #### 4.1.3 参数配置
 
-​	下面我们列出了DeepONet的具体训练参数和网络参数设置。其中，为了更清晰地展示参数配置，我们在'basic_config' 中列出的训练参数，均为针对每个特定模型训练时设置的，除此外剩余的基本训练参数设置，见 1.1 中的 'basic_config' 。
+​	 &emsp; &emsp;下面我们列出了DeepONet的具体训练参数和网络参数设置。其中，为了更清晰地展示参数配置，我们在'basic_config' 中列出的训练参数，均为针对每个特定模型训练时设置的，除此外剩余的基本训练参数设置，见 1.1 中的 'basic_config' 。
 
 ```python
 basic_config:
@@ -1027,7 +1025,7 @@ github：https://github.com/scaomath/galerkin-transformer
 
 #### 4.1.2 代码说明
 
-​		改进的attention机制核心算法实现过程：（包括fourier,galerkin,linear,softmax）
+​		 &emsp; &emsp;改进的attention机制核心算法实现过程：（包括fourier,galerkin,linear,softmax）
 
 ```python
 class SimpleAttention(nn.Layer):
@@ -1169,7 +1167,7 @@ class SimpleAttention(nn.Layer):
 
 #### 4.1.3 参数配置
 
-​		下面我们列出了Transformer的具体训练参数和网络参数设置。其中，为了更清晰地展示参数配置，我们在'basic_config' 中列出的训练参数，均为针对每个特定模型训练时设置的，除此外剩余的基本训练参数设置，见 1.1 中的 'basic_config' 。
+​		 &emsp; &emsp;下面我们列出了Transformer的具体训练参数和网络参数设置。其中，为了更清晰地展示参数配置，我们在'basic_config' 中列出的训练参数，均为针对每个特定模型训练时设置的，除此外剩余的基本训练参数设置，见 1.1 中的 'basic_config' 。
 
 ```python
 basic_config:
@@ -1226,7 +1224,7 @@ TNO_model:
 
 ### 4.6 训练方法
 
-​		五种神经算子网络均采用相同的训练方式，即Adam优化器。FNO、U-Net、FNN、DeepONet和Transformer的训练步长分别采用400，500，800，800和800个Epoch。损失函数采用三种方式：训练总损失和性能参数损失采用*L*2（MSE）损失；物理场损失采用平均相对误差和最大相对误差。损失函数具体公式如下所示：
+​		 &emsp; &emsp;五种神经算子网络均采用相同的训练方式，即Adam优化器。FNO、U-Net、FNN、DeepONet和Transformer的训练步长分别采用400，500，800，800和800个Epoch。损失函数采用三种方式：训练总损失和性能参数损失采用*L*2（MSE）损失；物理场损失采用平均相对误差和最大相对误差。损失函数具体公式如下所示：
 
 | 损失函数                   | 公式                                                         |
 | -------------------------- | ------------------------------------------------------------ |
@@ -1241,7 +1239,7 @@ TNO_model:
 
 - 下述所有结果仅展示了部分分析，详细的结论请参见文章中。
 
-​		下图展示了五种神经算子网络模型在整个训练过程中的总物理场损失、每个物理场的损失及性能参数收敛情况。
+​		 &emsp; &emsp;下图展示了五种神经算子网络模型在整个训练过程中的总物理场损失、每个物理场的损失及性能参数收敛情况。
 
 | 损失收敛曲线                 |                                                              |
 | ---------------------------- | ------------------------------------------------------------ |
@@ -1250,13 +1248,13 @@ TNO_model:
 | **四个物理场的平均相对误差** | <img src="picture/FMEAD_LOSS.png" width="30%"> |
 | **四个物理场的最大相对误差** | <img src="picture/FMAXD_LOSS.png" width="30%"> |
 
-​		为了更直观地比较不同模型在预测物理场中的偏差，我们选择60%的样本量，对五种神经算子网络模型预测物理场的最大相对误差和平均相对误差进行对比。
+​		 &emsp; &emsp;为了更直观地比较不同模型在预测物理场中的偏差，我们选择60%的样本量，对五种神经算子网络模型预测物理场的最大相对误差和平均相对误差进行对比。
 
 | **FMAXD** | <img src="picture/FMAXD.png" width="80%">|
 | --------- | ------------------------------------------------------------ |
 | **FMEAD** | <img src="picture/FMEAD.png" width="80%">|
 
-​		下图展示了五种神经算子网络预测的压力场p、温度场t、速度场u和v的真实场、预测场和误差分布。
+​		 &emsp; &emsp;下图展示了五种神经算子网络预测的压力场p、温度场t、速度场u和v的真实场、预测场和误差分布。
 
 | 预测全局物理场  |                                                            |
 | --------------- | ---------------------------------------------------------- |
@@ -1266,14 +1264,14 @@ TNO_model:
 | **DeepONet**    | <img src="picture/DON.png" width="60%">  |
 | **Transformer** | <img src="picture/tno.jpg" width="60%">  |
 
-​		此处，我们只放置预测效果最好的Tranformer和最差的DeepONet的物理场局部放大图。
+​		 &emsp; &emsp;此处，我们只放置预测效果最好的Tranformer和最差的DeepONet的物理场局部放大图。
 
 | 预测局部物理场  |                                                             |
 | --------------- | ----------------------------------------------------------- |
 | **Transformer** | <img src="picture/tno_loc.jpg" width="60%"> |
 | **DeepONet**    | <img src="picture/DON_LOC.png" width="60%">  |
 
-​			为了更直观地可视化微通道内每个物理变量的变化趋势，并对比不同神经算子网络模型在捕捉局部物理场细节的能力，我们选择了三个特定的位置进行分析，分析方法受文章[8]启发。这些位置分别位于靠近微通道的上壁、下壁和中间区域。曲线U位于距离上壁6.30 *μ*m处，曲线D位于距离下壁6.30 *μ*m处，曲线M位于微通道中心，距离上下壁面等距2.5 mm。注意：为了更清楚地反映三个不同通道位置的物理变量变化趋势及不同神经算子网络模型的局部预测效果，我们在此处只任选两种神经算子网络FNO和U-Net与真实值进行对比。其中蓝线为真实值，红圈、黑圈分别表示FNO和U-Net的预测值。值得注意的是，两种神经算子网络模型预测的物理变量与实际值基本一致，但在非矩形区域的凹槽和凸槽附近，U-Net很难捕捉到局部细微特征，因此预测误差较大。	
+​			 &emsp; &emsp;为了更直观地可视化微通道内每个物理变量的变化趋势，并对比不同神经算子网络模型在捕捉局部物理场细节的能力，我们选择了三个特定的位置进行分析，分析方法受文章[8]启发。这些位置分别位于靠近微通道的上壁、下壁和中间区域。曲线U位于距离上壁6.30 *μ*m处，曲线D位于距离下壁6.30 *μ*m处，曲线M位于微通道中心，距离上下壁面等距2.5 mm。注意：为了更清楚地反映三个不同通道位置的物理变量变化趋势及不同神经算子网络模型的局部预测效果，我们在此处只任选两种神经算子网络FNO和U-Net与真实值进行对比。其中蓝线为真实值，红圈、黑圈分别表示FNO和U-Net的预测值。值得注意的是，两种神经算子网络模型预测的物理变量与实际值基本一致，但在非矩形区域的凹槽和凸槽附近，U-Net很难捕捉到局部细微特征，因此预测误差较大。	
 
 | 微通道内部不同位置的物理量分析 | 曲线D                                                        | 曲线M                                                        | 曲线U                                                        |
 | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -1282,20 +1280,20 @@ TNO_model:
 | **速度u**                      | <img src="picture/G.png" width="80%"> | <img src="picture/H.png" width="80%">| <img src="picture/I.png" width="80%"> |
 | **速度v**                      | <img src="picture/J.png" width="80%"> | <img src="picture/K.png" width="80%"> | <img src="picture/L.png" width="80%"> |
 
-​		在本文中，我们成功地预测了流体的物理场，并以空间积分的形式提取了有效表征流体传热性能的热物性参数*Nu*和*f*。如下图所示，*x*轴表示实际值，*y*轴表示预测值。散点越接近*y* *= x*线，预测结果越准确。值得注意的是，*Nu* 和 *f* 的预测误差分别在6%和5%以内，这证实了我们的方法可以较高地精度地实现对流动换热性能参数地预测。
+​		 &emsp; &emsp;在本文中，我们成功地预测了流体的物理场，并以空间积分的形式提取了有效表征流体传热性能的热物性参数*Nu*和*f*。如下图所示，*x*轴表示实际值，*y*轴表示预测值。散点越接近*y* *= x*线，预测结果越准确。值得注意的是，*Nu* 和 *f* 的预测误差分别在6%和5%以内，这证实了我们的方法可以较高地精度地实现对流动换热性能参数地预测。
 
 | 性能参数 |                                                              |
 | -------- | ------------------------------------------------------------ |
 | ***Nu*** |  <img src="picture/TARGER_NU.png" width="30%"> |
 | ***f***  | <img src="picture/TARGET_F.png" width="30%"> |
 
-​		为了讨论不同样本数量对预测效果的影响，我们任选两种预测效果较好的神经算子网络FNO和效果较差的U-Net，分别选取总样本数量的60%、40%、20%、10%、5%和2.5%，对预测效果进行对比。综合FNO和U-Net在不同样本量下物理场的平均绝对预测误差，我们可以看出，FNO在较少样本量下实现了较高精度的物理场预测。例如只选取5%的样本即可达到小于0.1的物理场误差，选取40%的样本可以获得最佳的预测效果。而U-Net需要40%的样本才可达到小于0.1的误差，60%的样本达到最优的预测效果。因此，在训练样本数量的角度来看，FNO的计算所需资源远小于U-Net。
+​	 &emsp; &emsp;	为了讨论不同样本数量对预测效果的影响，我们任选两种预测效果较好的神经算子网络FNO和效果较差的U-Net，分别选取总样本数量的60%、40%、20%、10%、5%和2.5%，对预测效果进行对比。综合FNO和U-Net在不同样本量下物理场的平均绝对预测误差，我们可以看出，FNO在较少样本量下实现了较高精度的物理场预测。例如只选取5%的样本即可达到小于0.1的物理场误差，选取40%的样本可以获得最佳的预测效果。而U-Net需要40%的样本才可达到小于0.1的误差，60%的样本达到最优的预测效果。因此，在训练样本数量的角度来看，FNO的计算所需资源远小于U-Net。
 
 | 训练集大小对物理场平均相对误差的影响 | FNO                                                          | U-Net                                                        |
 | ------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | **FMAEAD**                           | <img src="picture/FNO_FMEAD.png" width="100%"> | <img src="picture/FMEAD_UNET.png" width="100%"> |
 
-​		最后，我们在计算成本方面对五种神经算子网络模型进行了更详细的比较。如下表所示，FNO占用显存最少，DeepONet占用显存最多，且分别需要占用1.21 GB和 6.43 GB的显存，后者的需求大约是前者的5倍。在训练时间方面，DeepONet 训练时间最长，相比时间最短的FNO增加了3 倍。此外，Transformer和U-Net的总参数量最多，大量数据需求是由于其大量的内存成本，较长的训练时间，以及需要大量的训练样本来实现对物理场的精确识别。但综合物理场及损失等对比，Transformer和FNO在预测精度和训练成本上最优，U-Net和DeepONet的预测精度和训练成本最差。且预测效果最优的Transformer比预测效果最差的DeepONet的预测精度提高了1个数量级。
+​		 &emsp; &emsp;最后，我们在计算成本方面对五种神经算子网络模型进行了更详细的比较。如下表所示，FNO占用显存最少，DeepONet占用显存最多，且分别需要占用1.21 GB和 6.43 GB的显存，后者的需求大约是前者的5倍。在训练时间方面，DeepONet 训练时间最长，相比时间最短的FNO增加了3 倍。此外，Transformer和U-Net的总参数量最多，大量数据需求是由于其大量的内存成本，较长的训练时间，以及需要大量的训练样本来实现对物理场的精确识别。但综合物理场及损失等对比，Transformer和FNO在预测精度和训练成本上最优，U-Net和DeepONet的预测精度和训练成本最差。且预测效果最优的Transformer比预测效果最差的DeepONet的预测精度提高了1个数量级。
 
 | 训练成本            | FNO       | U-Net       | FNN     | DeepONet | Transformer |
 | ------------------- | --------- | ----------- | ------- | -------- | ----------- |
@@ -1306,7 +1304,7 @@ TNO_model:
 | 显存占用 (GB)       | 1.21      | 2.17        | 5.62    | 6.43     | 2.48        |
 | 训练时间 (h)        | 1.02      | 1.81        | 3.11    | 3.25     | 1.70        |
 
-​		**本次代码和测试结果仅仅抛砖引玉，期待有兴趣的使用者在此基础上进行进一步探索。**
+​		 **本次代码和测试结果仅仅抛砖引玉，期待有兴趣的使用者在此基础上进行进一步探索。**
 
 
 
