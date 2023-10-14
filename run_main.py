@@ -13,10 +13,11 @@ from process_data import HeatDataset, HeatDataLoader
 from neural_model import BasicModule
 
 # 读入原始配置文件
-with open(os.path.join('default_config.yml'), encoding='utf-8') as f:
+name = 'TNO'
+with open(os.path.join('config', name + '.yaml'), encoding='utf-8') as f:
     config = yaml.full_load(f)
-
 basic_config = config['basic_config']
+
 
 # 数据配置
 training_size = basic_config['training_size']
@@ -31,7 +32,6 @@ train_loader = HeatDataLoader(train_dataset, batch_size=batch_size, shuffle=True
 valid_loader = HeatDataLoader(valid_dataset, batch_size=batch_size, shuffle=False, drop_last=False)
 
 # 网络参数配置
-name = 'DON'
 network_config = config[name + '_model']
 Module = BasicModule(name=name, config=basic_config, network_config=network_config)
 
